@@ -1,5 +1,6 @@
 package com.vapecenter.demo.service;
 
+import com.vapecenter.demo.models.Users;
 import com.vapecenter.demo.repositories.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,4 +19,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     Logger log = Logger.getLogger(CustomerServiceImpl.class.getName());
 
+    @Override
+    public Users getUser(int id) {
+        return customerRepo.getUser(id);
+    }
 }

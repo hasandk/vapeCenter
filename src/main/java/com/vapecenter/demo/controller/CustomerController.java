@@ -1,5 +1,6 @@
 package com.vapecenter.demo.controller;
 
+import com.vapecenter.demo.models.Users;
 import com.vapecenter.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ public class CustomerController {
     @GetMapping("/")
     public String index(){
         log.info("index called");
+        Users user = customerService.getUser(0);
+        log.info(""+user.getFirstName()+" "+user.getEmail());
 
         return "index";
     }
