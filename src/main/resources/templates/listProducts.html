@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+
+    <h1>Produkter</h1>
+    <tr class="active" th:each="product : ${productList}">
+
+            <form th:method="Put" th:action="@{/listProducts}" th:object="${cart}">
+                <input type="hidden" name="productId" th:value="${product.productId}"/>
+                <input type="number" th:name="amount" value="1"/>
+
+                <button href="/listProducts" class="btn btn-primary" type="submit" value="Tilføj"></button>
+
+            </form>
+
+    </tr>
+
+</body>
+</html>

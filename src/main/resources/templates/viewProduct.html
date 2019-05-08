@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
+    <meta charset="UTF-8">
+    <title>Product</title>
+<body>
+<div class="container">
+
+    <h1>Display Product</h1>
+
+    <input type="hidden" th:field="${product.productId}">
+
+    <p th:text="${'Beskrivelse: ' + product.description}"></p>
+    <p th:text="${'Produkt: ' + product.name}"></p>
+    <p th:text="${'Pris: ' + product.price}"></p>
+    <p th:text="${'På lager: ' + product.stock}"></p>
+    <p th:text="${'Pris: ' + product.price}"></p>
+
+
+
+    <img th:src="${product.pictureLink}" width="200" height = "200"/>
+
+    <form th:method="Put" th:action="@{/viewProduct/}" th:object="${cart}">
+        <input type="hidden" name="productId" th:value="${product.productId}"/>
+        <input type="number" th:name="amount" value="1" min="1" max="19"/>
+
+        <button href="/viewProduct/}" class="btn btn-primary" type="submit" value="Tilføj"></button>
+
+    </form>
+
+</div>
+</body>
+
+</html>

@@ -1,10 +1,13 @@
 package com.vapecenter.demo.repositories;
 
+import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -61,6 +64,46 @@ public class CustomerRepoImpl implements CustomerRepo {
                 return user;
             }
         });
+    }
+
+    @Override
+    public ArrayList<Products> getProducts() {
+        String sql = "SELECT * FROM Products WHERE active =1";
+        return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
+            @Override
+            public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int productId, stock;
+                String name, description, pictureLink;
+                double price;
+                boolean active;
+                ArrayList<Products> products = new ArrayList<>();
+
+                while (rs.next()) {
+                    productId = rs.getInt("productId");
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    price = rs.getDouble("price");
+                    pictureLink = rs.getString("pictureLink");
+                    active = rs.getBoolean("active");
+                    stock = rs.getInt("stock");
+
+                    products.add(new Products(productId, stock, name, description, pictureLink, active, price));
+                }
+                return products;
+            }
+        });
+
+    }
+
+    @Override
+    public Products getProductById(int productId) {
+        String sql = "SELECT * FROM VapeCenter.Products WHERE active = 1 AND productId = ?";
+        RowMapper<Products> rowMapper = new BeanPropertyRowMapper<>(Products.class);
+
+        Products product = template.queryForObject(sql, rowMapper, productId);
+
+
+        return product;
     }
 
 }
