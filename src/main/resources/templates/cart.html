@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Indkøbskurv</title>
@@ -18,36 +18,32 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Bluevape</td>
-                <td>550 kr.</td>
-                <td>1100 kr.</td>
-                <td>
-                    <form>
-                        <input type="number" value="2">
-                        <button type="submit">Opdater</button>
-                        <button type="submit">Slet</button>
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <td>Crapvape</td>
-                <td>5 kr.</td>
-                <td>30 kr.</td>
-                <td>
-                    <form>
-                        <input type="number" value="6">
-                        <button type="submit">Opdater</button>
-                        <button type="submit">Slet</button>
-                    </form>
-                </td>
+            <tr th:each="cart : ${carts}">
+                <span th:each="product : ${products}">
+                    <span th:if="${cart.productId == product.productId}">
+                        <td th:text="${product.name}">
+
+                        </td>
+                        <td th:text="${product.price} + ' kr.'"></td>
+                        <td th:text="${product.price * cart.amount} + ' kr.'"></td>
+                        <td>
+                            <form action="/editCart" method="post">
+                                <input type="hidden" th:value="${cart.productId}" name="productId">
+                                <input type="number" th:value="${cart.amount}" name="amount">
+                                <button type="submit">Opdater</button>
+                            </form>
+                            <form action="/deleteCart" method="post">
+                                <input type="hidden" th:value="${cart.productId}" name="productId">
+                                <button type="submit">Slet</button>
+                            </form>
+                        </td>
+                    </span>
+                </span>
             </tr>
         </tbody>
     </table>
 
-    <h3>Total pris: 1130 kr.</h3>
-    <form>
-        <button type="submit">Gå til betaling</button>
-    </form>
+    <h3>Total pris: <span th:text="${total}"></span> kr.</h3>
+    <a href="#">Gå til betaling</a>
 </body>
 </html>

@@ -9,6 +9,17 @@ public class Products {
     public Products() {
     }
 
+    public Products(int productId, String name, double price) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+
+        this.stock = 10;
+        this.description = "";
+        this.pictureLink = "";
+        this.active = true;
+    }
+
     public int getProductId() {
         return productId;
     }

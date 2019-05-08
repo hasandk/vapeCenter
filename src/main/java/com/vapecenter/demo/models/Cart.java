@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Cart {
     private int cartId, productId, amount;
     private double totalPrice;
-    private ArrayList<Products> productList;
+    //private ArrayList<Products> productList;
 
     public Cart() {
     }
@@ -13,6 +13,9 @@ public class Cart {
     public Cart(int productId, int amount) {
         this.productId = productId;
         this.amount = amount;
+
+        this.cartId = 0;
+        this.totalPrice = 0;
     }
 
     public int getCartId() {
@@ -47,13 +50,13 @@ public class Cart {
         this.totalPrice = totalPrice;
     }
 
-    public ArrayList<Products> getProductList() {
+    /*public ArrayList<Products> getProductList() {
         return productList;
     }
 
     public void setProductList(ArrayList<Products> productList) {
         this.productList = productList;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -62,7 +65,7 @@ public class Cart {
                 ", productId=" + productId +
                 ", amount=" + amount +
                 ", totalPrice=" + totalPrice +
-                ", productList=" + productList +
+                ", productList="  +
                 '}';
     }
 }
