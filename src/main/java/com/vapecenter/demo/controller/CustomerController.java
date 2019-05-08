@@ -25,15 +25,11 @@ public class CustomerController {
 
     public CustomerController(){
 
-        cartList.add(new Cart(3,2));
-        cartList.add(new Cart(5,6));
-        cartList.add(new Cart(4,3));
-
-        productsList.add(new Products(1, "Supervape", 5000000));
+        /*productsList.add(new Products(1, "Supervape", 5000000));
         productsList.add(new Products(2, "Crapvape", 5));
         productsList.add(new Products(3, "Bluevape", 550));
         productsList.add(new Products(4, "Ecovape", 320));
-        productsList.add(new Products(5, "DSBvape", 1500));
+        productsList.add(new Products(5, "DSBvape", 1500));*/
 
     }
 
@@ -42,7 +38,7 @@ public class CustomerController {
 
     private final String CART = "cart";
 
-    List<Products> productsList = new ArrayList<>();
+    //List<Products> productsList = new ArrayList<>();
 
     Logger log = Logger.getLogger(CustomerController.class.getName());
 
@@ -61,6 +57,8 @@ public class CustomerController {
         log.info("Cart is called...");
 
         double total = 0;
+
+        List<Products> productsList = customerService.getProducts();
 
         for(Cart c : cartList){
             for(Products p : productsList){
