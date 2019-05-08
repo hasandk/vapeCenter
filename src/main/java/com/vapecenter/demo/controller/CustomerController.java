@@ -18,6 +18,8 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
+    private final String CART = "cart";
+
     Logger log = Logger.getLogger(CustomerController.class.getName());
 
     @GetMapping("/")
@@ -27,5 +29,11 @@ public class CustomerController {
         log.info(""+user.getFirstName()+" "+user.getEmail());
 
         return "index";
+    }
+
+    @GetMapping("/cart")
+    public String cart(){
+
+        return CART;
     }
 }
