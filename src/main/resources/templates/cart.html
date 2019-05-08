@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indkøbskurv</title>
+</head>
+<body>
+    <h1>Indkøbskurv</h1>
+    <h2>Indhold i indkøbskurv</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Produktnavn:</th>
+                <th>Pris pr. enhed</th>
+                <th>Pris for alle enheder</th>
+                <th>Antal enheder</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bluevape</td>
+                <td>550 kr.</td>
+                <td>1100 kr.</td>
+                <td>
+                    <form>
+                        <input type="number" value="2">
+                        <button type="submit">Opdater</button>
+                        <button type="submit">Slet</button>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>Crapvape</td>
+                <td>5 kr.</td>
+                <td>30 kr.</td>
+                <td>
+                    <form>
+                        <input type="number" value="6">
+                        <button type="submit">Opdater</button>
+                        <button type="submit">Slet</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Total pris: 1130 kr.</h3>
+    <form>
+        <button type="submit">Gå til betaling</button>
+    </form>
+</body>
+</html>
