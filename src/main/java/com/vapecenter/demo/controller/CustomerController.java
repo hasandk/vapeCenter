@@ -23,7 +23,7 @@ public class CustomerController {
     @GetMapping("/")
     public String index(){
         log.info("index called");
-        Users user = customerService.getUser(0);
+        Users user = customerService.getUser(1);
         log.info(""+user.getFirstName()+" "+user.getEmail());
 
         return "index";
