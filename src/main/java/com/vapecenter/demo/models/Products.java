@@ -13,11 +13,6 @@ public class Products {
         this.productId = productId;
         this.name = name;
         this.price = price;
-
-        this.stock = 10;
-        this.description = "";
-        this.pictureLink = "";
-        this.active = true;
     }
 
     public int getProductId() {

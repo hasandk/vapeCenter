@@ -13,9 +13,6 @@ public class Cart {
     public Cart(int productId, int amount) {
         this.productId = productId;
         this.amount = amount;
-
-        this.cartId = 0;
-        this.totalPrice = 0;
     }
 
     public int getCartId() {
