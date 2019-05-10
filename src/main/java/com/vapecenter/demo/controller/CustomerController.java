@@ -92,27 +92,45 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/editCart", method = RequestMethod.POST)
-    public String editCart(@RequestParam("productId")Integer productId, @RequestParam("amount")Integer amount, Model model) throws Exception{
+    public String editCart(@RequestParam("productId")Integer productId, @RequestParam("amount")Integer amount, Model model, HttpSession session) throws Exception{
         log.info("editCart is called...");
 
-        for (Cart c : cartList) {
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
+        List<Cart> cart = (List<Cart>) session.getAttribute("cart");
+
+        for (Cart c : cart) {
             if(c.getProductId() == productId){
                 c.setAmount(amount);
             }
         }
 
+        session.removeAttribute("cart");
+        session.setAttribute("cart", cart);
+
         return "redirect:/cart";
     }
 
     @RequestMapping(value = "/deleteCart", method = RequestMethod.POST)
-    public String deleteCart(@RequestParam("productId")Integer productId, Model model) throws Exception {
+    public String deleteCart(@RequestParam("productId")Integer productId, Model model, HttpSession session) throws Exception {
         log.info("deleteCart is called...");
 
-        for (int i = 0; i < cartList.size(); i++) {
-            if (cartList.get(i).getProductId() == productId) {
-                cartList.remove(i);
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
+        List<Cart> cart = (List<Cart>) session.getAttribute("cart");
+
+        for (int i = 0; i < cart.size(); i++) {
+            if (cart.get(i).getProductId() == productId) {
+                cart.remove(i);
             }
         }
+
+        session.removeAttribute("cart");
+        session.setAttribute("cart", cart);
 
         return "redirect:/cart";
     }
