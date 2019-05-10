@@ -47,4 +47,19 @@ public class CustomerServiceImpl implements CustomerService {
     public Products addProduct(Products product) {
         return customerRepo.addProduct(product);
     }
+
+    @Override
+    public int countPages(ArrayList<Products> products) {
+        int pages = 1;
+        int remainder = 0;
+
+        if(products.size()>15) {
+            pages = products.size()/15;
+            remainder = products.size() % 15;
+            if(remainder !=0) {
+                pages++;
+            }
+        }
+        return pages;
+    }
 }

@@ -18,4 +18,6 @@ public interface CustomerService {
     AboutUs getAboutInfo(int aboutUsId);
 
     Products addProduct(Products product);
+
+    int countPages(ArrayList<Products> products);
 }

@@ -105,11 +105,15 @@ public class CustomerController {
     @GetMapping("/listProducts")
     public String listProducts(Model model, Cart cart) {
         log.info("listProducts called...");
-        /*ArrayList<Products> test = new ArrayList<>();
-        test = customerService.getProducts();
-        log.info(test.get(1).getProductId()+"");*/
-        model.addAttribute("productList", customerService.getProducts());
+        int pages;
+
+        ArrayList<Products> productList = customerService.getProducts();
+
+        pages = customerService.countPages(customerService.getProducts());
+
+        model.addAttribute("productList", productList);
         model.addAttribute("cart", cart);
+        model.addAttribute("pages", pages);
 
         return "listProducts";
     }
