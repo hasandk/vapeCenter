@@ -1,6 +1,7 @@
 package com.vapecenter.demo.repositories;
 
 import com.vapecenter.demo.models.Products;
+import com.vapecenter.demo.models.ShipingMethod;
 import com.vapecenter.demo.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -104,6 +105,29 @@ public class CustomerRepoImpl implements CustomerRepo {
 
 
         return product;
+    }
+
+    @Override
+    public List<ShipingMethod> getShippingMethods(){
+        String sql = "SELECT * FROM shippingMethod";
+        return this.template.query(sql, new ResultSetExtractor<ArrayList<ShipingMethod>>() {
+            @Override
+            public ArrayList<ShipingMethod> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int shippingId;
+                String companyName;
+                double price;
+                List<ShipingMethod> shippingMethods = new ArrayList<>();
+
+                while (rs.next()) {
+                    shippingId = rs.getInt("shippingId");
+                    companyName = rs.getString("companyName");
+                    price = rs.getDouble("price");
+
+                    shippingMethods.add(new ShipingMethod(shippingId, companyName, price));
+                }
+                return (ArrayList<ShipingMethod>) shippingMethods;
+            }
+        });
     }
 
 }

@@ -1,8 +1,6 @@
 package com.vapecenter.demo.controller;
 
-import com.vapecenter.demo.models.Cart;
-import com.vapecenter.demo.models.Products;
-import com.vapecenter.demo.models.Users;
+import com.vapecenter.demo.models.*;
 import com.vapecenter.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -37,6 +36,8 @@ public class CustomerController {
     CustomerService customerService;
 
     private final String CART = "cart";
+    private final String CHECKOUT = "checkout";
+    private final String DELIVERY = "delivery";
 
     //List<Products> productsList = new ArrayList<>();
 
@@ -99,6 +100,49 @@ public class CustomerController {
         }
 
         return "redirect:/cart";
+    }
+
+    @GetMapping("/checkout")
+    public String checkout(Model model){
+        log.info("Checkout is called...");
+
+        model.addAttribute("checkout", new Checkout());
+
+        return CHECKOUT;
+    }
+
+    @PostMapping("/checkout")
+    public String checkoutDone(@ModelAttribute Checkout checkout, Model model, HttpSession session){
+        log.info("" + checkout.toString());
+
+        session.setAttribute("checkout", checkout);
+        Object sessionCheckout = session.getAttribute("checkout");
+
+        log.info("Session: " + sessionCheckout.toString());
+
+        return "redirect:/delivery";
+    }
+
+    @GetMapping("/delivery")
+    public String delivery(Model model){
+        log.info("Checkout is called...");
+
+        model.addAttribute("delivery", new ShipingMethod());
+        model.addAttribute("shippingMethods", customerService.getShippingMethods());
+
+        return DELIVERY;
+    }
+
+    @PostMapping("/delivery")
+    public String deliveryDone(@ModelAttribute ShipingMethod delivery, Model model, HttpSession session){
+        log.info("" + delivery.toString());
+
+        session.setAttribute("delivery", delivery);
+        Object sessionDelivery = session.getAttribute("delivery");
+
+        log.info("Session: " + sessionDelivery.toString());
+
+        return "redirect:/";
     }
 
     @GetMapping("/listProducts")

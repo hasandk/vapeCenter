@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Gå til kassen: Step 2</title>
+</head>
+<body>
+    <h1>Gå til kassen</h1>
+    <h2>Vælg leverings metode</h2>
+    <form method="post" th:action="@{/delivery}" th:object="${delivery}">
+        <span th:each="shippingMethod : ${shippingMethods}">
+            <input type="radio" name="method" th:value="${shippingMethod.shippingId}"> <span th:text="${shippingMethod.companyName}"></span> <br>
+        </span><br>
+
+        <button type="button">Tilbage</button>
+        <button type="submit">Næste</button>
+    </form>
+</body>
+</html>
