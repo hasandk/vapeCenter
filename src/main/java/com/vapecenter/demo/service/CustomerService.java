@@ -1,10 +1,6 @@
 package com.vapecenter.demo.service;
 
-import com.vapecenter.demo.models.AboutUs;
-import com.vapecenter.demo.models.Cart;
-import com.vapecenter.demo.models.Products;
-import com.vapecenter.demo.models.ShipingMethod;
-import com.vapecenter.demo.models.Users;
+import com.vapecenter.demo.models.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +11,13 @@ public interface CustomerService {
     Users getUser(int id);
     ArrayList<Products> getProducts();
 
+    ArrayList<Products> getProductsByCategory(int categoryId);
+
+    ArrayList<Products> searchProduct(String search);
+
     Products getProductById(int productId);
+
+    Category getCategoryById(int categoryId);
 
     List<ShipingMethod> getShippingMethods();
     AboutUs getAboutInfo(int aboutUsId);

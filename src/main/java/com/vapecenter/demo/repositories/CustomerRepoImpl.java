@@ -1,9 +1,6 @@
 package com.vapecenter.demo.repositories;
 
-import com.vapecenter.demo.models.AboutUs;
-import com.vapecenter.demo.models.Products;
-import com.vapecenter.demo.models.ShipingMethod;
-import com.vapecenter.demo.models.Users;
+import com.vapecenter.demo.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -74,7 +71,7 @@ public class CustomerRepoImpl implements CustomerRepo {
         return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
             @Override
             public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                int productId, stock;
+                int productId, stock, fk_categoryId;
                 String name, description, pictureLink;
                 double price;
                 int active;
@@ -83,17 +80,83 @@ public class CustomerRepoImpl implements CustomerRepo {
                 while (rs.next()) {
                     productId = rs.getInt("productId");
                     name = rs.getString("name");
+                    fk_categoryId = rs.getInt("fk_categoryId");
                     description = rs.getString("description");
                     price = rs.getDouble("price");
                     pictureLink = rs.getString("pictureLink");
                     active = rs.getInt("active");
                     stock = rs.getInt("stock");
 
-                    products.add(new Products(productId, stock, name, description, pictureLink, active, price));
+                    products.add(new Products(productId, stock, fk_categoryId, name, description, pictureLink, active, price));
                 }
                 return products;
             }
         });
+
+    }
+
+    @Override
+    public ArrayList<Products> getProductsByCategory(int categoryId) {
+        String sql = "SELECT * FROM Products WHERE active =1 AND fk_categoryId = ?";
+        return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
+            @Override
+            public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int productId, stock, fk_categoryId;
+                String name, description, pictureLink;
+                double price;
+                int active;
+                ArrayList<Products> products = new ArrayList<>();
+
+                while (rs.next()) {
+                    productId = rs.getInt("productId");
+                    name = rs.getString("name");
+                    fk_categoryId = rs.getInt("fk_categoryId");
+                    description = rs.getString("description");
+                    price = rs.getDouble("price");
+                    pictureLink = rs.getString("pictureLink");
+                    active = rs.getInt("active");
+                    stock = rs.getInt("stock");
+
+                    products.add(new Products(productId, stock, fk_categoryId, name, description, pictureLink, active, price));
+                }
+                return products;
+            }
+        }, categoryId);
+
+    }
+
+    @Override
+    public ArrayList<Products> searchProduct(String search) {
+        search = "%" + search + "%";
+        String sql = "SELECT productId, name, description, price, pictureLink, active, stock, fk_categoryId FROM Products\n" +
+                "INNER JOIN Category\n" +
+                "ON Products.fk_categoryId = Category.categoryId\n" +
+                "WHERE active = 1 AND (name LIKE ? OR categoryName LIKE ?)";
+        return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
+            @Override
+            public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int productId, stock, fk_categoryId;
+                String name, description, pictureLink;
+                double price;
+                int active;
+                ArrayList<Products> products = new ArrayList<>();
+
+                while (rs.next()) {
+                    productId = rs.getInt("productId");
+                    name = rs.getString("name");
+                    fk_categoryId = rs.getInt("fk_categoryId");
+                    description = rs.getString("description");
+                    price = rs.getDouble("price");
+                    pictureLink = rs.getString("pictureLink");
+                    active = rs.getInt("active");
+                    stock = rs.getInt("stock");
+
+                    products.add(new Products(productId, stock, fk_categoryId, name, description, pictureLink, active, price));
+                }
+                log.info("repo searchProduct result: " + products.size());
+                return products;
+            }
+        }, search, search);
 
     }
 
@@ -106,6 +169,16 @@ public class CustomerRepoImpl implements CustomerRepo {
 
 
         return product;
+    }
+
+    @Override
+    public Category getCategoryById(int categoryId) {
+        String sql = "SELECT * FROM Category WHERE categoryId = ?";
+        RowMapper<Category> rowMapper = new BeanPropertyRowMapper<>(Category.class);
+
+        Category category = template.queryForObject(sql, rowMapper, categoryId);
+
+        return category;
     }
 
     @Override

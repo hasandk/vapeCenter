@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+
+    <form action="/" th:action="@{/search}" method="post">
+        <input type="text" th:name="searchProduct" placeholder="Søg efter produkt...">
+        <button type="submit">Søg</button>
+    </form>
+</body>
+</html>

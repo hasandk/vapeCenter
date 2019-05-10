@@ -1,10 +1,6 @@
 package com.vapecenter.demo.service;
 
-import com.vapecenter.demo.models.AboutUs;
-import com.vapecenter.demo.models.Cart;
-import com.vapecenter.demo.models.Products;
-import com.vapecenter.demo.models.ShipingMethod;
-import com.vapecenter.demo.models.Users;
+import com.vapecenter.demo.models.*;
 import com.vapecenter.demo.repositories.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,8 +32,25 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public ArrayList<Products> getProductsByCategory(int categoryId){
+        return customerRepo.getProductsByCategory(categoryId);
+    }
+
+    @Override
+    public ArrayList<Products> searchProduct(String search){
+        ArrayList<Products> products = customerRepo.searchProduct(search);
+        log.info("service searchProduct result: " + products.size());
+        return products;
+    }
+
+    @Override
     public Products getProductById(int productId) {
         return customerRepo.getProductById(productId);
+    }
+
+    @Override
+    public Category getCategoryById(int categoryId) {
+        return customerRepo.getCategoryById(categoryId);
     }
 
     @Override

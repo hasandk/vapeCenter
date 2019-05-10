@@ -41,6 +41,10 @@ public class CustomerController {
     private final String CART = "cart";
     private final String CHECKOUT = "checkout";
     private final String DELIVERY = "delivery";
+    private final String CATEGORY = "category";
+    private final String SEARCH = "search";
+    private final String SEARCHRESULT = "searchResult";
+    private final String LISTPRODUCTS = "listProducts";
 
     //List<Products> productsList = new ArrayList<>();
 
@@ -255,6 +259,96 @@ public class CustomerController {
         model.addAttribute("product",customerService.getProductById(cart.getProductId()));
 
         return "redirect:/viewProduct/"+cart.getProductId();
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public String category(@PathVariable("categoryId") int categoryId, Model model, Cart cart, HttpSession session) {
+        log.info("category called...");
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
+        /*ArrayList<Products> test = new ArrayList<>();
+        test = customerService.getProducts();
+        log.info(test.get(1).getProductId()+"");*/
+        model.addAttribute("productList", customerService.getProductsByCategory(categoryId));
+        model.addAttribute("cart", cart);
+        model.addAttribute("categoryName", customerService.getCategoryById(categoryId).getCategoryName());
+
+        return CATEGORY;
+    }
+
+    @PutMapping("/category")
+    public String category(@ModelAttribute Cart cart, Model model, Cart cartNew, HttpSession session) {
+        log.info("category putmapping called...");
+
+        //cartList.add(cart);
+
+        int categoryId = customerService.getProductById(cart.getProductId()).getFk_categoryId();
+
+        List<Cart> sCart = (List<Cart>) session.getAttribute("cart");
+        session.removeAttribute("cart");
+        sCart.add(cart);
+        session.setAttribute("cart", sCart);
+
+        for (Cart testCart: cartList) {
+            log.info(""+testCart.getProductId()+" amount:"+testCart.getAmount());
+        }
+
+
+        model.addAttribute("productList", customerService.getProducts());
+        model.addAttribute("cart", cartNew);
+        return "redirect:/" + CATEGORY + "/" + categoryId;
+    }
+
+    @GetMapping("/search")
+    public String search(Model model){
+        log.info("search called...");
+
+        return SEARCH;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String search(@RequestParam("searchProduct")String searchProduct, Model model, HttpSession session) throws  Exception{
+        log.info("search requestmapping called");
+        log.info("search word" + searchProduct);
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
+        List<Products> searchResult = customerService.searchProduct(searchProduct);
+
+        log.info("controller searchProduct result: " + searchResult.size());
+
+        model.addAttribute("searchProduct", searchProduct);
+        model.addAttribute("products", searchResult);
+        return SEARCHRESULT;
+
+    }
+
+    @PutMapping("/searchResult")
+    public String searchResult(@ModelAttribute Cart cart, Model model, Cart cartNew, HttpSession session) {
+        log.info("category putmapping called...");
+
+        //cartList.add(cart);
+
+        int categoryId = customerService.getProductById(cart.getProductId()).getFk_categoryId();
+
+        List<Cart> sCart = (List<Cart>) session.getAttribute("cart");
+        session.removeAttribute("cart");
+        sCart.add(cart);
+        session.setAttribute("cart", sCart);
+
+        for (Cart testCart: cartList) {
+            log.info(""+testCart.getProductId()+" amount:"+testCart.getAmount());
+        }
+
+
+        model.addAttribute("productList", customerService.getProducts());
+        model.addAttribute("cart", cartNew);
+        return "redirect:/" + LISTPRODUCTS;
     }
 
     @GetMapping("/aboutUs")
