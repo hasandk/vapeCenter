@@ -23,4 +23,5 @@ public interface CustomerService {
     Products addProduct(Products product);
 
     int countPages(ArrayList<Products> products);
+    int modulus(ArrayList<Products> products);
 }

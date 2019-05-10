@@ -62,11 +62,19 @@ public class CustomerServiceImpl implements CustomerService {
 
         if(products.size()>15) {
             pages = products.size()/15;
-            remainder = products.size() % 15;
+            remainder = modulus(products);
             if(remainder !=0) {
                 pages++;
             }
         }
         return pages;
+    }
+
+    @Override
+    public int modulus(ArrayList<Products> products) {
+        int modulus = 0;
+        modulus = products.size() % 15;
+
+        return modulus;
     }
 }
