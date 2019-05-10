@@ -1,5 +1,6 @@
 package com.vapecenter.demo.repositories;
 
+import com.vapecenter.demo.models.AboutUs;
 import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.Users;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,6 @@ public interface CustomerRepo {
     ArrayList<Products> getProducts();
 
     Products getProductById(int productId);
+
+    AboutUs getAboutInfo(int aboutUsId);
 }

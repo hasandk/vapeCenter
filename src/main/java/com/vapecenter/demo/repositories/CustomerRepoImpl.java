@@ -1,5 +1,6 @@
 package com.vapecenter.demo.repositories;
 
+import com.vapecenter.demo.models.AboutUs;
 import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,16 @@ public class CustomerRepoImpl implements CustomerRepo {
 
 
         return product;
+    }
+
+    @Override
+    public AboutUs getAboutInfo(int aboutUsId) {
+        String sql = "SELECT * FROM VapeCenter.AboutUs WHERE aboutUsId = ?";
+        RowMapper<AboutUs> rowMapper = new BeanPropertyRowMapper<>(AboutUs.class);
+
+        AboutUs aboutUs = template.queryForObject(sql, rowMapper, aboutUsId);
+
+        return aboutUs;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.vapecenter.demo.service;
 
+import com.vapecenter.demo.models.AboutUs;
 import com.vapecenter.demo.models.Cart;
 import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.Users;
@@ -13,4 +14,6 @@ public interface CustomerService {
     ArrayList<Products> getProducts();
 
     Products getProductById(int productId);
+
+    AboutUs getAboutInfo(int aboutUsId);
 }

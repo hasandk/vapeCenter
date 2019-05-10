@@ -1,5 +1,6 @@
 package com.vapecenter.demo.controller;
 
+import com.vapecenter.demo.models.AboutUs;
 import com.vapecenter.demo.models.Cart;
 import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.Users;
@@ -157,5 +158,14 @@ public class CustomerController {
         model.addAttribute("product",customerService.getProductById(cart.getProductId()));
 
         return "redirect:/viewProduct/"+cart.getProductId();
+    }
+
+    @GetMapping("/aboutUs")
+    public String aboutUs(Model model) {
+        AboutUs aboutUs = customerService.getAboutInfo(1);
+
+        model.addAttribute("aboutUs", aboutUs);
+
+        return "aboutUs";
     }
 }

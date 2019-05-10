@@ -1,5 +1,6 @@
 package com.vapecenter.demo.service;
 
+import com.vapecenter.demo.models.AboutUs;
 import com.vapecenter.demo.models.Cart;
 import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.Users;
@@ -35,5 +36,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Products getProductById(int productId) {
         return customerRepo.getProductById(productId);
+    }
+
+    @Override
+    public AboutUs getAboutInfo(int aboutUsId) {
+        return customerRepo.getAboutInfo(aboutUsId);
     }
 }
