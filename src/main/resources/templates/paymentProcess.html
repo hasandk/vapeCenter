@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>PaymentProcess</title>
+</head>
+<body>
+    <form action="/creditcardAccept" method="Post">
+        CardNumber:<br>
+        <input type="number" name="cardnumber"><br>
+        Expire dato:<br>
+        <input type="number" name="month" min="1" max="99"> / <input type="number" name="year" min="1" max="99"><br>
+        Sequritycode:<br>
+        <input type="number" name="securitycode" min="1" max="999"><br>
+        <button type="submit">OK</button>
+    </form>
+
+</body>
+</html>

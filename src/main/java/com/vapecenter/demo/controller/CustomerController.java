@@ -158,4 +158,18 @@ public class CustomerController {
 
         return "redirect:/viewProduct/"+cart.getProductId();
     }
+
+    @GetMapping("/paymentProcess")
+    public String paymentProcess() {
+        log.info("paymentProcess called...");
+
+        return "paymentProcess";
+    }
+
+    @PostMapping("/creditcardAccept")
+    public String paymentAccept() {
+        log.info("paymentAccept postmapping called...");
+
+        return "creditcardAccept";
+    }
 }
