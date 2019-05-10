@@ -1,6 +1,10 @@
 package com.vapecenter.demo.controller;
 
 import com.vapecenter.demo.models.*;
+import com.vapecenter.demo.models.AboutUs;
+import com.vapecenter.demo.models.Cart;
+import com.vapecenter.demo.models.Products;
+import com.vapecenter.demo.models.Users;
 import com.vapecenter.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @Controller
@@ -234,5 +237,28 @@ public class CustomerController {
         model.addAttribute("product",customerService.getProductById(cart.getProductId()));
 
         return "redirect:/viewProduct/"+cart.getProductId();
+    }
+
+    @GetMapping("/aboutUs")
+    public String aboutUs(Model model) {
+        AboutUs aboutUs = customerService.getAboutInfo(1);
+        log.info("" + aboutUs.getPictureLink());
+        model.addAttribute("aboutUs", aboutUs);
+
+        return "aboutUs";
+    }
+
+    @GetMapping("/paymentProcess")
+    public String paymentProcess() {
+        log.info("paymentProcess called...");
+
+        return "paymentProcess";
+    }
+
+    @PostMapping("/creditcardAccept")
+    public String paymentAccept() {
+        log.info("paymentAccept postmapping called...");
+
+        return "creditcardAccept";
     }
 }

@@ -1,5 +1,6 @@
 package com.vapecenter.demo.repositories;
 
+import com.vapecenter.demo.models.AboutUs;
 import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.ShipingMethod;
 import com.vapecenter.demo.models.Users;
@@ -17,4 +18,7 @@ public interface CustomerRepo {
     Products getProductById(int productId);
 
     List<ShipingMethod> getShippingMethods();
+    AboutUs getAboutInfo(int aboutUsId);
+
+    Products addProduct(Products product);
 }
