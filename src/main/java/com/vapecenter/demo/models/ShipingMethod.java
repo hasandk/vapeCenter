@@ -8,6 +8,12 @@ public class ShipingMethod {
     public ShipingMethod() {
     }
 
+    public ShipingMethod(int shippingId, String companyName, double price) {
+        this.shippingId = shippingId;
+        this.companyName = companyName;
+        this.price = price;
+    }
+
     public int getShippingId() {
         return shippingId;
     }

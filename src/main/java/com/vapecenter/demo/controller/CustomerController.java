@@ -1,5 +1,6 @@
 package com.vapecenter.demo.controller;
 
+import com.vapecenter.demo.models.*;
 import com.vapecenter.demo.models.AboutUs;
 import com.vapecenter.demo.models.Cart;
 import com.vapecenter.demo.models.Products;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import java.util.logging.Logger;
 
 @Controller
@@ -38,30 +39,44 @@ public class CustomerController {
     CustomerService customerService;
 
     private final String CART = "cart";
+    private final String CHECKOUT = "checkout";
+    private final String DELIVERY = "delivery";
 
     //List<Products> productsList = new ArrayList<>();
 
     Logger log = Logger.getLogger(CustomerController.class.getName());
 
     @GetMapping("/")
-    public String index(){
+    public String index(HttpSession session){
         log.info("index called");
         Users user = customerService.getUser(1);
         log.info(""+user.getFirstName()+" "+user.getEmail());
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
 
         return "index";
     }
 
 
     @GetMapping("/cart")
-    public String cart(Model model){
+    public String cart(Model model, HttpSession session){
         log.info("Cart is called...");
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
 
         double total = 0;
 
         List<Products> productsList = customerService.getProducts();
 
-        for(Cart c : cartList){
+        List<Cart> cart = (List<Cart>) session.getAttribute("cart");
+
+        log.info("" + cart.size());
+
+        for(Cart c : cart){
             for(Products p : productsList){
                 if (c.getProductId() == p.getProductId()) {
                     total = total + ( c.getAmount() * p.getPrice() );
@@ -69,7 +84,7 @@ public class CustomerController {
             }
         }
 
-        model.addAttribute("carts", cartList);
+        model.addAttribute("carts", cart);
         model.addAttribute("products", productsList);
         model.addAttribute("total", total);
 
@@ -102,8 +117,51 @@ public class CustomerController {
         return "redirect:/cart";
     }
 
+    @GetMapping("/checkout")
+    public String checkout(Model model){
+        log.info("Checkout is called...");
+
+        model.addAttribute("checkout", new Checkout());
+
+        return CHECKOUT;
+    }
+
+    @PostMapping("/checkout")
+    public String checkoutDone(@ModelAttribute Checkout checkout, Model model, HttpSession session){
+        log.info("" + checkout.toString());
+
+        session.setAttribute("checkout", checkout);
+        Checkout sessionCheckout = (Checkout) session.getAttribute("checkout");
+
+        log.info("Session: " + sessionCheckout.toString());
+
+        return "redirect:/delivery";
+    }
+
+    @GetMapping("/delivery")
+    public String delivery(Model model){
+        log.info("Checkout is called...");
+
+        model.addAttribute("delivery", new ShipingMethod());
+        model.addAttribute("shippingMethods", customerService.getShippingMethods());
+
+        return DELIVERY;
+    }
+
+    @PostMapping("/delivery")
+    public String deliveryDone(@ModelAttribute ShipingMethod delivery, Model model, HttpSession session){
+        log.info("" + delivery.toString());
+
+        session.setAttribute("delivery", delivery);
+        ShipingMethod sessionDelivery = (ShipingMethod) session.getAttribute("delivery");
+
+        log.info("Session: " + sessionDelivery.toString());
+
+        return "redirect:/";
+    }
+
     @GetMapping("/listProducts")
-    public String listProducts(Model model, Cart cart) {
+    public String listProducts(Model model, Cart cart, HttpSession session) {
         log.info("listProducts called...");
         int pages;
 
@@ -111,7 +169,11 @@ public class CustomerController {
 
         pages = customerService.countPages(customerService.getProducts());
 
-        model.addAttribute("productList", productList);
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
+        model.addAttribute("productList", customerService.getProducts());
         model.addAttribute("cart", cart);
         model.addAttribute("pages", pages);
 
@@ -119,9 +181,16 @@ public class CustomerController {
     }
 
     @PutMapping("/listProducts")
-    public String listProducts(@ModelAttribute Cart cart, Model model, Cart cartNew) {
+    public String listProducts(@ModelAttribute Cart cart, Model model, Cart cartNew, HttpSession session) {
         log.info("listProducts putmapping called...");
-        cartList.add(cart);
+
+        //cartList.add(cart);
+
+        List<Cart> sCart = (List<Cart>) session.getAttribute("cart");
+        session.removeAttribute("cart");
+        sCart.add(cart);
+        session.setAttribute("cart", sCart);
+
         for (Cart testCart: cartList) {
             log.info(""+testCart.getProductId()+" amount:"+testCart.getAmount());
         }
@@ -133,8 +202,13 @@ public class CustomerController {
     }
 
     @GetMapping("viewProduct/{productId}")
-    public String viewProduct(@PathVariable("productId") int productId, Model model, Cart cart) {
+    public String viewProduct(@PathVariable("productId") int productId, Model model, Cart cart, HttpSession session) {
         log.info("viewProduct called with id="+productId);
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
         model.addAttribute("product", customerService.getProductById(productId));
         model.addAttribute("cart", cart);
 
@@ -142,7 +216,7 @@ public class CustomerController {
     }
 
     @PutMapping("viewProduct/")
-    public String viewProduct(@ModelAttribute Cart cart, Model model) {
+    public String viewProduct(@ModelAttribute Cart cart, Model model, HttpSession session) {
         log.info("viewProduct putmapping called with id="+cart.getProductId());
         Boolean check = false;
 
@@ -153,7 +227,11 @@ public class CustomerController {
             }
         }
         if(check == false) {
-            cartList.add(cart);
+            //cartList.add(cart);
+            List<Cart> sCart = (List<Cart>) session.getAttribute("cart");
+            session.removeAttribute("cart");
+            sCart.add(cart);
+            session.setAttribute("cart", sCart);
         }
 
         for (Cart testCart: cartList) {
