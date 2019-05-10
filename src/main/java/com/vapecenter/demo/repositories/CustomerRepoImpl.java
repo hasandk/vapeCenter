@@ -76,7 +76,7 @@ public class CustomerRepoImpl implements CustomerRepo {
                 int productId, stock;
                 String name, description, pictureLink;
                 double price;
-                boolean active;
+                int active;
                 ArrayList<Products> products = new ArrayList<>();
 
                 while (rs.next()) {
@@ -85,7 +85,7 @@ public class CustomerRepoImpl implements CustomerRepo {
                     description = rs.getString("description");
                     price = rs.getDouble("price");
                     pictureLink = rs.getString("pictureLink");
-                    active = rs.getBoolean("active");
+                    active = rs.getInt("active");
                     stock = rs.getInt("stock");
 
                     products.add(new Products(productId, stock, name, description, pictureLink, active, price));
@@ -115,6 +115,21 @@ public class CustomerRepoImpl implements CustomerRepo {
         AboutUs aboutUs = template.queryForObject(sql, rowMapper, aboutUsId);
 
         return aboutUs;
+    }
+
+    @Override
+    public Products addProduct(Products product) {
+        String sql = "INSERT INTO VapeCenter.Products VALUES(default,?,?,?,?,?,?)";
+        String name = product.getName();
+        String description = product.getDescription();
+        double price = product.getPrice();
+        String pictureLink = product.getPictureLink();
+        int active = product.getActive();
+        int stock = product.getStock();
+
+        this.template.update(sql, name, description, price, pictureLink, active, stock);
+
+        return product;
     }
 
 }

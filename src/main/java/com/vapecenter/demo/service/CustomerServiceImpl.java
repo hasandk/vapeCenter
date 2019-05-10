@@ -42,4 +42,9 @@ public class CustomerServiceImpl implements CustomerService {
     public AboutUs getAboutInfo(int aboutUsId) {
         return customerRepo.getAboutInfo(aboutUsId);
     }
+
+    @Override
+    public Products addProduct(Products product) {
+        return customerRepo.addProduct(product);
+    }
 }

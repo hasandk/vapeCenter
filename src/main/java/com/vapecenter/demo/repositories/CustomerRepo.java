@@ -16,4 +16,6 @@ public interface CustomerRepo {
     Products getProductById(int productId);
 
     AboutUs getAboutInfo(int aboutUsId);
+
+    Products addProduct(Products product);
 }

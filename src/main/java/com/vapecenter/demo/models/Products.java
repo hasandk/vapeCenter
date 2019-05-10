@@ -3,7 +3,7 @@ package com.vapecenter.demo.models;
 public class Products {
     int productId, stock;
     String name, description, pictureLink;
-    Boolean active;
+    int active;
     double price;
 
     public Products() {
@@ -13,7 +13,7 @@ public class Products {
         this.name = name;
     }
 
-    public Products(int productId, int stock, String name, String description, String pictureLink, Boolean active, double price) {
+    public Products(int productId, int stock, String name, String description, String pictureLink, int active, double price) {
         this.productId = productId;
         this.stock = stock;
         this.name = name;
@@ -63,11 +63,11 @@ public class Products {
         this.pictureLink = pictureLink;
     }
 
-    public Boolean getActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(int active) {
         this.active = active;
     }
 

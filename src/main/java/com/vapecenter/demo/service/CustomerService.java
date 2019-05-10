@@ -16,4 +16,6 @@ public interface CustomerService {
     Products getProductById(int productId);
 
     AboutUs getAboutInfo(int aboutUsId);
+
+    Products addProduct(Products product);
 }
