@@ -5,7 +5,11 @@
     <title>Om VapeCenter</title>
 </head>
 <body>
-<img src="${aboutUs.}">
+<img th:src="${aboutUs.pictureLink}"/><br>
+Om os:<br>
+<span th:text="${aboutUs.description}"></span><br>
 
+Adresse:<br>
+<span th:text="${aboutUs.streetName + ' ' + aboutUs.zipcode}"></span>
 </body>
 </html>

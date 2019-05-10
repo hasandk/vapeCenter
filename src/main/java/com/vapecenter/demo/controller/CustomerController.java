@@ -163,7 +163,7 @@ public class CustomerController {
     @GetMapping("/aboutUs")
     public String aboutUs(Model model) {
         AboutUs aboutUs = customerService.getAboutInfo(1);
-
+        log.info(""+aboutUs.getPictureLink());
         model.addAttribute("aboutUs", aboutUs);
 
         return "aboutUs";
