@@ -163,9 +163,23 @@ public class CustomerController {
     @GetMapping("/aboutUs")
     public String aboutUs(Model model) {
         AboutUs aboutUs = customerService.getAboutInfo(1);
-        log.info(""+aboutUs.getPictureLink());
+        log.info("" + aboutUs.getPictureLink());
         model.addAttribute("aboutUs", aboutUs);
 
         return "aboutUs";
+    }
+
+    @GetMapping("/paymentProcess")
+    public String paymentProcess() {
+        log.info("paymentProcess called...");
+
+        return "paymentProcess";
+    }
+
+    @PostMapping("/creditcardAccept")
+    public String paymentAccept() {
+        log.info("paymentAccept postmapping called...");
+
+        return "creditcardAccept";
     }
 }
