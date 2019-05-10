@@ -8,8 +8,14 @@
     <h1>Gå til kassen</h1>
     <h2>Udfyld dine informationer</h2>
     <form method="post" th:action="@{/checkout}" th:object="${checkout}">
-        <label for="name">Navn:</label>
-        <input type="text" id="name" th:name="name" required>
+
+        <label for="firstName">Fornavn:</label>
+        <input type="text" id="firstName" th:name="firstName" required>
+
+        <br><br>
+
+        <label for="lastName">Efternavn:</label>
+        <input type="text" id="lastName" th:name="lastName" required>
 
         <br><br>
 

@@ -44,24 +44,36 @@ public class CustomerController {
     Logger log = Logger.getLogger(CustomerController.class.getName());
 
     @GetMapping("/")
-    public String index(){
+    public String index(HttpSession session){
         log.info("index called");
         Users user = customerService.getUser(1);
         log.info(""+user.getFirstName()+" "+user.getEmail());
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
 
         return "index";
     }
 
 
     @GetMapping("/cart")
-    public String cart(Model model){
+    public String cart(Model model, HttpSession session){
         log.info("Cart is called...");
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
 
         double total = 0;
 
         List<Products> productsList = customerService.getProducts();
 
-        for(Cart c : cartList){
+        List<Cart> cart = (List<Cart>) session.getAttribute("cart");
+
+        log.info("" + cart.size());
+
+        for(Cart c : cart){
             for(Products p : productsList){
                 if (c.getProductId() == p.getProductId()) {
                     total = total + ( c.getAmount() * p.getPrice() );
@@ -69,7 +81,7 @@ public class CustomerController {
             }
         }
 
-        model.addAttribute("carts", cartList);
+        model.addAttribute("carts", cart);
         model.addAttribute("products", productsList);
         model.addAttribute("total", total);
 
@@ -116,7 +128,7 @@ public class CustomerController {
         log.info("" + checkout.toString());
 
         session.setAttribute("checkout", checkout);
-        Object sessionCheckout = session.getAttribute("checkout");
+        Checkout sessionCheckout = (Checkout) session.getAttribute("checkout");
 
         log.info("Session: " + sessionCheckout.toString());
 
@@ -138,7 +150,7 @@ public class CustomerController {
         log.info("" + delivery.toString());
 
         session.setAttribute("delivery", delivery);
-        Object sessionDelivery = session.getAttribute("delivery");
+        ShipingMethod sessionDelivery = (ShipingMethod) session.getAttribute("delivery");
 
         log.info("Session: " + sessionDelivery.toString());
 
@@ -146,8 +158,13 @@ public class CustomerController {
     }
 
     @GetMapping("/listProducts")
-    public String listProducts(Model model, Cart cart) {
+    public String listProducts(Model model, Cart cart, HttpSession session) {
         log.info("listProducts called...");
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
         /*ArrayList<Products> test = new ArrayList<>();
         test = customerService.getProducts();
         log.info(test.get(1).getProductId()+"");*/
@@ -158,9 +175,16 @@ public class CustomerController {
     }
 
     @PutMapping("/listProducts")
-    public String listProducts(@ModelAttribute Cart cart, Model model, Cart cartNew) {
+    public String listProducts(@ModelAttribute Cart cart, Model model, Cart cartNew, HttpSession session) {
         log.info("listProducts putmapping called...");
-        cartList.add(cart);
+
+        //cartList.add(cart);
+
+        List<Cart> sCart = (List<Cart>) session.getAttribute("cart");
+        session.removeAttribute("cart");
+        sCart.add(cart);
+        session.setAttribute("cart", sCart);
+
         for (Cart testCart: cartList) {
             log.info(""+testCart.getProductId()+" amount:"+testCart.getAmount());
         }
@@ -172,8 +196,13 @@ public class CustomerController {
     }
 
     @GetMapping("viewProduct/{productId}")
-    public String viewProduct(@PathVariable("productId") int productId, Model model, Cart cart) {
+    public String viewProduct(@PathVariable("productId") int productId, Model model, Cart cart, HttpSession session) {
         log.info("viewProduct called with id="+productId);
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
         model.addAttribute("product", customerService.getProductById(productId));
         model.addAttribute("cart", cart);
 
@@ -181,7 +210,7 @@ public class CustomerController {
     }
 
     @PutMapping("viewProduct/")
-    public String viewProduct(@ModelAttribute Cart cart, Model model) {
+    public String viewProduct(@ModelAttribute Cart cart, Model model, HttpSession session) {
         log.info("viewProduct putmapping called with id="+cart.getProductId());
         Boolean check = false;
 
@@ -192,7 +221,11 @@ public class CustomerController {
             }
         }
         if(check == false) {
-            cartList.add(cart);
+            //cartList.add(cart);
+            List<Cart> sCart = (List<Cart>) session.getAttribute("cart");
+            session.removeAttribute("cart");
+            sCart.add(cart);
+            session.setAttribute("cart", sCart);
         }
 
         for (Cart testCart: cartList) {

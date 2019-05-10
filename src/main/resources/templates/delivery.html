@@ -9,7 +9,7 @@
     <h2>Vælg leverings metode</h2>
     <form method="post" th:action="@{/delivery}" th:object="${delivery}">
         <span th:each="shippingMethod : ${shippingMethods}">
-            <input type="radio" name="method" th:value="${shippingMethod.shippingId}"> <span th:text="${shippingMethod.companyName}"></span> <br>
+            <input type="radio" name="shippingId" th:value="${shippingMethod.shippingId}"> <span th:text="${shippingMethod.companyName}"></span> <br>
         </span><br>
 
         <button type="button">Tilbage</button>

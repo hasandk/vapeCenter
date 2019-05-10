@@ -1,14 +1,15 @@
 package com.vapecenter.demo.models;
 
 public class Checkout {
-    String name, email, street, city;
+    String firstName, lastName, email, street, city;
     int phone, zipcode;
 
     public Checkout() {
     }
 
-    public Checkout(String name, String email, String street, String city, int phone, int zipcode) {
-        this.name = name;
+    public Checkout(String firstName, String lastName, String email, String street, String city, int phone, int zipcode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.street = street;
         this.city = city;
@@ -16,12 +17,20 @@ public class Checkout {
         this.zipcode = zipcode;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -66,8 +75,9 @@ public class Checkout {
 
     @Override
     public String toString() {
-        return "checkout{" +
-                "name='" + name + '\'' +
+        return "Checkout{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
