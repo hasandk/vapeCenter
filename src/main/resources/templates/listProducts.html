@@ -13,8 +13,10 @@
 
             <form th:method="Put" th:action="@{/listProducts}" th:object="${cart}">
                 <td name="name" th:text="${product.name}"></td>
+                <!--<td name="priceText" th:text="Pris: "></td>-->
+                <td name="price" th:text="'Pris: '+${product.price}+' Kr.'"></td>
                 <input type="hidden" name="productId" th:value="${product.productId}"/>
-                <input type="number" th:name="amount" value="1"/>
+                <input type="number" th:name="amount" value="1" />
 
                 <button href="/listProducts" type="submit" value="Tilføj">Læg i Kurv</button>
 
