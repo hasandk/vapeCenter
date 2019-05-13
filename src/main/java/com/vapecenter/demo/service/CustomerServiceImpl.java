@@ -67,4 +67,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Products addProduct(Products product) {
         return customerRepo.addProduct(product);
     }
+
+    @Override
+    public boolean createOrder(List<Cart> cart, Checkout checkout, ShipingMethod shipingMethod, double totalPrice){
+        return customerRepo.createOrder(cart, checkout, shipingMethod, totalPrice);
+    }
 }

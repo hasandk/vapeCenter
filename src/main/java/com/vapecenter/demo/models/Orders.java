@@ -7,6 +7,10 @@ public class Orders {
     public Orders() {
     }
 
+    public Orders(int orderId) {
+        this.orderId = orderId;
+    }
+
     public int getOrderId() {
         return orderId;
     }

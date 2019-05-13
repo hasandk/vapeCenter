@@ -44,6 +44,8 @@
     </table>
 
     <h3>Total pris: <span th:text="${total}"></span> kr.</h3>
-    <a href="/checkout">Gå til betaling</a>
+    <span th:if="${readyToCheckout}">
+        <a href="/checkout">Gå til betaling</a>
+    </span>
 </body>
 </html>

@@ -228,5 +228,55 @@ public class CustomerRepoImpl implements CustomerRepo {
         return product;
     }
 
+    @Override
+    public boolean createOrder(List<Cart> cart, Checkout checkout, ShipingMethod shipingMethod, double totalPrice){
+        //create new order
+
+        String sql = "INSERT INTO Orders VALUE (DEFAULT, NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String firstName = checkout.getFirstName();
+        String lastName = checkout.getLastName();
+        int phone = checkout.getPhone();
+        String email = checkout.getEmail();
+        String streetName = checkout.getStreet();
+        int zipcode = checkout.getZipcode();
+        String city = checkout.getCity();
+
+        int shippingId = shipingMethod.getShippingId();
+
+        this.template.update(sql, shippingId, totalPrice, firstName, lastName, phone, email, streetName, zipcode, city);
+
+        //get order id from created order
+
+        sql = "SELECT MAX(orderId) FROM Orders";
+        RowMapper<Orders> rowMapper = new BeanPropertyRowMapper<>(Orders.class);
+
+        Orders orders = template.queryForObject(sql, rowMapper);
+
+        int orderId = orders.getOrderId();
+
+        //add products to order
+
+        List<Products> products = getProducts();
+
+        for(Cart c : cart){
+            sql = "INSERT INTO OrderedProducts VALUE (DEFAULT, ?, ?, ?, ?, ?)";
+            int productId = c.getProductId();
+            int productAmount = c.getAmount();
+            String productName = "";
+            double productPrice = 0;
+
+            for(Products p : products) {
+                if(c.getProductId() == p.getProductId()) {
+                    productName = p.getName();
+                    productPrice = p.getPrice();
+                }
+            }
+
+            this.template.update(sql, productId, orderId, productName, productAmount, productPrice);
+        }
+
+        return true;
+    }
+
 }
 

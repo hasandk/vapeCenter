@@ -78,6 +78,17 @@ public class CustomerController {
 
         List<Cart> cart = (List<Cart>) session.getAttribute("cart");
 
+        if(cart.size() > 0){
+            session.setAttribute("checkoutStep", 1);
+            log.info("checkoutStep = " + 1);
+
+            model.addAttribute("readyToCheckout", true);
+        } else {
+            session.setAttribute("checkoutStep", 0);
+
+            model.addAttribute("readyToCheckout", false);
+        }
+
         log.info("" + cart.size());
 
         for(Cart c : cart){
@@ -140,12 +151,20 @@ public class CustomerController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(Model model){
+    public String checkout(Model model, HttpSession session){
         log.info("Checkout is called...");
 
-        model.addAttribute("checkout", new Checkout());
+        int checkoutStep = (int) session.getAttribute("checkoutStep");
 
-        return CHECKOUT;
+        log.info("checkoutStep = " + checkoutStep);
+
+
+        if(checkoutStep > 0) {
+            model.addAttribute("checkout", new Checkout());
+            return CHECKOUT;
+        } else {
+            return "redirect:/cart";
+        }
     }
 
     @PostMapping("/checkout")
@@ -155,19 +174,28 @@ public class CustomerController {
         session.setAttribute("checkout", checkout);
         Checkout sessionCheckout = (Checkout) session.getAttribute("checkout");
 
+        session.setAttribute("checkoutStep", 2);
+
         log.info("Session: " + sessionCheckout.toString());
 
         return "redirect:/delivery";
     }
 
     @GetMapping("/delivery")
-    public String delivery(Model model){
+    public String delivery(Model model, HttpSession session){
         log.info("Checkout is called...");
+
+        int checkoutStep = (int) session.getAttribute("checkoutStep");
+        log.info("checkoutStep = " + checkoutStep);
 
         model.addAttribute("delivery", new ShipingMethod());
         model.addAttribute("shippingMethods", customerService.getShippingMethods());
 
-        return DELIVERY;
+        if(checkoutStep > 1) {
+            return DELIVERY;
+        } else {
+            return "redirect:/checkout";
+        }
     }
 
     @PostMapping("/delivery")
@@ -177,9 +205,11 @@ public class CustomerController {
         session.setAttribute("delivery", delivery);
         ShipingMethod sessionDelivery = (ShipingMethod) session.getAttribute("delivery");
 
+        session.setAttribute("checkoutStep", 3);
+
         log.info("Session: " + sessionDelivery.toString());
 
-        return "redirect:/";
+        return "redirect:/paymentProcess";
     }
 
     @GetMapping("/listProducts")
@@ -361,15 +391,52 @@ public class CustomerController {
     }
 
     @GetMapping("/paymentProcess")
-    public String paymentProcess() {
+    public String paymentProcess(HttpSession session) {
         log.info("paymentProcess called...");
 
-        return "paymentProcess";
+        List<Products> productsList = customerService.getProducts();
+        List<Cart> cart = (List<Cart>) session.getAttribute("cart");
+
+        int checkoutStep = (int) session.getAttribute("checkoutStep");
+        log.info("checkoutStep = " + checkoutStep);
+
+        double total = 0;
+
+        for(Cart c : cart){
+            for(Products p : productsList){
+                if (c.getProductId() == p.getProductId()) {
+                    total = total + ( c.getAmount() * p.getPrice() );
+                }
+            }
+        }
+
+        if(checkoutStep > 2) {
+            return "paymentProcess";
+        } else {
+            return "redirect:/delivery";
+        }
     }
 
     @PostMapping("/creditcardAccept")
-    public String paymentAccept() {
+    public String paymentAccept(HttpSession session) {
         log.info("paymentAccept postmapping called...");
+
+        List<Products> productsList = customerService.getProducts();
+        List<Cart> cart = (List<Cart>) session.getAttribute("cart");
+        Checkout checkout = (Checkout) session.getAttribute("checkout");
+        ShipingMethod shipingMethod = (ShipingMethod) session.getAttribute("delivery");
+
+        double total = 0;
+
+        for(Cart c : cart){
+            for(Products p : productsList){
+                if (c.getProductId() == p.getProductId()) {
+                    total = total + ( c.getAmount() * p.getPrice() );
+                }
+            }
+        }
+
+        customerService.createOrder(cart, checkout, shipingMethod, total);
 
         return "creditcardAccept";
     }
