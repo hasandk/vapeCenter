@@ -24,7 +24,7 @@
     </tr>
 
     <tr th:if="${currentPage-1 != 0}">
-        <a th:href="${currentPage-1}">Tilbage</a>
+        <a th:href="'/listProducts/'+${currentPage-1}">Tilbage</a>
     </tr>
 
     <!--<p th:text="${'På lager: ' + product.stock}"></p>
@@ -37,14 +37,14 @@
     </select>
 </form>-->
 
-<form tH:method="post" th:action="@{/listProducts/}">
+<form th:method="post" th:action="@{/listProducts/}">
     <select name="page" onchange='this.form.submit()'>
         <option th:each="pageFromArray : ${pageArray}" th:value="${pageFromArray}" th:text="${pageFromArray}"  th:selected="${pageFromArray==currentPage}"></option>
     </select><h5 th:text="'ud af ' +${maxPages}"></h5>
 </form>
 
     <tr th:if="${currentPage < maxPages}">
-        <a th:href="${currentPage+1}">Næste</a>
+        <a th:href="'/listProducts/'+${currentPage+1}">Næste</a>
     </tr>
 
 
