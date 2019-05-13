@@ -168,7 +168,12 @@ public class CustomerController {
 
         ArrayList<Products> productList = customerService.getProducts();
         ArrayList<Products> list15 = new ArrayList<>();
+        ArrayList<Integer> pageList = new ArrayList<>();
+
         pages = customerService.countPages(customerService.getProducts());
+
+        pageList = customerService.getPageArray(pages);
+        System.out.println("Hey DER!!!!! "+pageList.get(2));
 
         if(session.getAttribute("cart") == null){
             session.setAttribute("cart", cartList);
@@ -182,8 +187,9 @@ public class CustomerController {
 
         model.addAttribute("productList", list15);
         model.addAttribute("cart", cart);
-        model.addAttribute("pages", pages);
+        model.addAttribute("maxPages", pages);
         model.addAttribute("currentPage", currentPage);
+        model.addAttribute("pageArray", pageList);
 
         return "listProducts";
     }
@@ -193,6 +199,7 @@ public class CustomerController {
         ArrayList<Products> list15 = new ArrayList<>();
         ArrayList<Products> productList = customerService.getProducts();
         int maxPages = customerService.countPages(productList);
+        ArrayList<Integer> pageList = customerService.getPageArray(maxPages);
         log.info("listProducts called... currentPage="+page+" maxPages="+maxPages);
 
         if(page>=1) {
@@ -208,9 +215,12 @@ public class CustomerController {
             }
         }
 
+
         model.addAttribute("productList", list15);
         model.addAttribute("currentPage", page);
         model.addAttribute("maxPages", maxPages);
+        model.addAttribute("pageArray", pageList);
+
 
         return "listProducts";
     }

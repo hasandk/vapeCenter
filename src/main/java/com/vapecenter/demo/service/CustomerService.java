@@ -24,4 +24,6 @@ public interface CustomerService {
 
     int countPages(ArrayList<Products> products);
     int modulus(ArrayList<Products> products);
+    ArrayList<Integer> getPageArray(int pages);
+
 }

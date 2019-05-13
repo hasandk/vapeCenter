@@ -1,7 +1,6 @@
 package com.vapecenter.demo.service;
 
 import com.vapecenter.demo.models.AboutUs;
-import com.vapecenter.demo.models.Cart;
 import com.vapecenter.demo.models.Products;
 import com.vapecenter.demo.models.ShipingMethod;
 import com.vapecenter.demo.models.Users;
@@ -77,4 +76,17 @@ public class CustomerServiceImpl implements CustomerService {
 
         return modulus;
     }
+
+    @Override
+    public ArrayList<Integer> getPageArray(int pages) {
+        ArrayList<Integer> pageArray = new ArrayList<>();
+
+        for(int i = 1; i<=pages; i++) {
+            pageArray.add(i);
+        }
+
+        return pageArray;
+    }
+
+
 }
