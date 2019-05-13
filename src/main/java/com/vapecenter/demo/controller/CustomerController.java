@@ -154,6 +154,10 @@ public class CustomerController {
     public String checkout(Model model, HttpSession session){
         log.info("Checkout is called...");
 
+        if(session.getAttribute("checkoutStep") == null){
+            session.setAttribute("checkoutStep", 0);
+        }
+
         int checkoutStep = (int) session.getAttribute("checkoutStep");
 
         log.info("checkoutStep = " + checkoutStep);
@@ -185,6 +189,10 @@ public class CustomerController {
     public String delivery(Model model, HttpSession session){
         log.info("Checkout is called...");
 
+        if(session.getAttribute("checkoutStep") == null){
+            session.setAttribute("checkoutStep", 0);
+        }
+
         int checkoutStep = (int) session.getAttribute("checkoutStep");
         log.info("checkoutStep = " + checkoutStep);
 
@@ -201,6 +209,11 @@ public class CustomerController {
     @PostMapping("/delivery")
     public String deliveryDone(@ModelAttribute ShipingMethod delivery, Model model, HttpSession session){
         log.info("" + delivery.toString());
+
+        ShipingMethod shipingMethod = customerService.getShippingMethodById(delivery.getShippingId());
+
+        delivery.setPrice(shipingMethod.getPrice());
+        delivery.setCompanyName(shipingMethod.getCompanyName());
 
         session.setAttribute("delivery", delivery);
         ShipingMethod sessionDelivery = (ShipingMethod) session.getAttribute("delivery");
@@ -394,6 +407,10 @@ public class CustomerController {
     public String paymentProcess(HttpSession session) {
         log.info("paymentProcess called...");
 
+        if(session.getAttribute("checkoutStep") == null){
+            session.setAttribute("checkoutStep", 0);
+        }
+
         List<Products> productsList = customerService.getProducts();
         List<Cart> cart = (List<Cart>) session.getAttribute("cart");
 
@@ -435,6 +452,8 @@ public class CustomerController {
                 }
             }
         }
+
+        total = total + shipingMethod.getPrice();
 
         customerService.createOrder(cart, checkout, shipingMethod, total);
 

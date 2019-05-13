@@ -182,6 +182,16 @@ public class CustomerRepoImpl implements CustomerRepo {
     }
 
     @Override
+    public ShipingMethod getShippingMethodById(int shippingId) {
+        String sql = "SELECT * FROM shippingMethod WHERE shippingId = ?";
+        RowMapper<ShipingMethod> rowMapper = new BeanPropertyRowMapper<>(ShipingMethod.class);
+
+        ShipingMethod shipingMethod = template.queryForObject(sql, rowMapper, shippingId);
+
+        return shipingMethod;
+    }
+
+    @Override
     public List<ShipingMethod> getShippingMethods() {
         String sql = "SELECT * FROM shippingMethod";
         return this.template.query(sql, new ResultSetExtractor<ArrayList<ShipingMethod>>() {
@@ -247,7 +257,7 @@ public class CustomerRepoImpl implements CustomerRepo {
 
         //get order id from created order
 
-        sql = "SELECT MAX(orderId) FROM Orders";
+        sql = "SELECT MAX(orderId) AS orderId FROM Orders";
         RowMapper<Orders> rowMapper = new BeanPropertyRowMapper<>(Orders.class);
 
         Orders orders = template.queryForObject(sql, rowMapper);

@@ -20,6 +20,8 @@ public interface CustomerRepo {
 
     Category getCategoryById(int categoryId);
 
+    ShipingMethod getShippingMethodById(int shippingId);
+
     List<ShipingMethod> getShippingMethods();
     AboutUs getAboutInfo(int aboutUsId);
 

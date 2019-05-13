@@ -49,6 +49,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public ShipingMethod getShippingMethodById(int shippingId){
+        return customerRepo.getShippingMethodById(shippingId);
+    }
+
+    @Override
     public Category getCategoryById(int categoryId) {
         return customerRepo.getCategoryById(categoryId);
     }

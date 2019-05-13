@@ -17,6 +17,8 @@ public interface CustomerService {
 
     Products getProductById(int productId);
 
+    ShipingMethod getShippingMethodById(int shippingId);
+
     Category getCategoryById(int categoryId);
 
     List<ShipingMethod> getShippingMethods();
