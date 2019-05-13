@@ -12,8 +12,7 @@
     <tr class="active" th:each="product : ${productList}">
 
             <form th:method="Put" th:action="@{/listProducts}" th:object="${cart}">
-                <td name="name" th:text="${product.name}"></td>
-                <!--<td name="priceText" th:text="Pris: "></td>-->
+                <a th:href="'/viewProduct/'+${product.productId}"><td name="name" th:text="${product.name}"></td></a>
                 <td name="price" th:text="'Pris: '+${product.price}+' Kr.'"></td>
                 <input type="hidden" name="productId" th:value="${product.productId}"/>
                 <input type="number" th:name="amount" value="1" />
