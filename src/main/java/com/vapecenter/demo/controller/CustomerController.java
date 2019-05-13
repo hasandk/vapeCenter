@@ -203,7 +203,7 @@ public class CustomerController {
         log.info("listProducts called... currentPage="+page+" maxPages="+maxPages);
 
         if(page>=1) {
-            if(customerService.modulus(productList) >= 1 && page == customerService.countPages(productList)) {
+            /*if(customerService.modulus(productList) >= 1 && page == customerService.countPages(productList)) {
                 for(int i = (page * 15) - 15; i < (page*15)-15+customerService.modulus(productList); i++) {
                     list15.add(productList.get(i));
                 }
@@ -211,9 +211,11 @@ public class CustomerController {
             else {
                 for (int i = (page * 15) - 15; i < page * 15; i++) {
                     list15.add(productList.get(i));
-                }
-            }
+            }*/
+
+            list15 = customerService.list15(productList, page);
         }
+
 
 
         model.addAttribute("productList", list15);

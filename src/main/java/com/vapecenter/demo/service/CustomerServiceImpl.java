@@ -88,5 +88,23 @@ public class CustomerServiceImpl implements CustomerService {
         return pageArray;
     }
 
+    @Override
+    public ArrayList<Products> list15(ArrayList<Products> productList, int page) {
+        ArrayList<Products> list15 = new ArrayList<>();
+
+        if(modulus(productList) >= 1 && page == countPages(productList)) {
+            for(int i = (page * 15) - 15; i < (page*15)-15+modulus(productList); i++) {
+                list15.add(productList.get(i));
+            }
+        }
+        else {
+            for (int i = (page * 15) - 15; i < page * 15; i++) {
+                list15.add(productList.get(i));
+            }
+        }
+
+        return list15;
+    }
+
 
 }
