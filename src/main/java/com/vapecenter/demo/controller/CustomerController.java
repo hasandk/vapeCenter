@@ -228,18 +228,72 @@ public class CustomerController {
     @GetMapping("/listProducts")
     public String listProducts(Model model, Cart cart, HttpSession session) {
         log.info("listProducts called...");
+        int pages;
+        int currentPage = 1;
+
+        ArrayList<Products> productList = customerService.getProducts();
+        ArrayList<Products> list15 = new ArrayList<>();
+        ArrayList<Integer> pageList = new ArrayList<>();
+
+        pages = customerService.countPages(customerService.getProducts());
+
+        pageList = customerService.getPageArray(pages);
 
         if(session.getAttribute("cart") == null){
             session.setAttribute("cart", cartList);
         }
 
-        /*ArrayList<Products> test = new ArrayList<>();
-        test = customerService.getProducts();
-        log.info(test.get(1).getProductId()+"");*/
-        model.addAttribute("productList", customerService.getProducts());
+        if(productList.size()>15) {
+            for(int i = 0; i<15;i++) {
+                list15.add(productList.get(i));
+            }
+        }
+
+        model.addAttribute("productList", list15);
         model.addAttribute("cart", cart);
+        model.addAttribute("maxPages", pages);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("pageArray", pageList);
 
         return "listProducts";
+    }
+
+    @GetMapping("/listProducts/{page}")
+    public String listProducts(@PathVariable("page") int page, Model model, HttpSession session) {
+        ArrayList<Products> list15 = new ArrayList<>();
+        ArrayList<Products> productList = customerService.getProducts();
+        int maxPages = customerService.countPages(productList);
+        ArrayList<Integer> pageList = customerService.getPageArray(maxPages);
+        log.info("listProducts called... currentPage="+page+" maxPages="+maxPages);
+
+        if(page>=1) {
+            /*if(customerService.modulus(productList) >= 1 && page == customerService.countPages(productList)) {
+                for(int i = (page * 15) - 15; i < (page*15)-15+customerService.modulus(productList); i++) {
+                    list15.add(productList.get(i));
+                }
+            }
+            else {
+                for (int i = (page * 15) - 15; i < page * 15; i++) {
+                    list15.add(productList.get(i));
+            }*/
+
+            list15 = customerService.list15(productList, page);
+        }
+
+
+
+        model.addAttribute("productList", list15);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPages", maxPages);
+        model.addAttribute("pageArray", pageList);
+
+
+        return "listProducts";
+    }
+    @PostMapping("/listProducts/")
+    public String listProducts(@RequestParam("page") int page) {
+
+        return "redirect:/listProducts/"+page;
     }
 
     @PutMapping("/listProducts")
@@ -273,6 +327,8 @@ public class CustomerController {
 
         model.addAttribute("product", customerService.getProductById(productId));
         model.addAttribute("cart", cart);
+
+
 
         return "viewProduct";
     }

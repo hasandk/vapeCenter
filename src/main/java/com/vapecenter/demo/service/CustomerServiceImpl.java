@@ -1,5 +1,9 @@
 package com.vapecenter.demo.service;
 
+import com.vapecenter.demo.models.AboutUs;
+import com.vapecenter.demo.models.Products;
+import com.vapecenter.demo.models.ShipingMethod;
+import com.vapecenter.demo.models.Users;
 import com.vapecenter.demo.models.*;
 import com.vapecenter.demo.repositories.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +80,57 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean createOrder(List<Cart> cart, Checkout checkout, ShipingMethod shipingMethod, double totalPrice){
         return customerRepo.createOrder(cart, checkout, shipingMethod, totalPrice);
+    }
+
+    @Override
+    public int countPages(ArrayList<Products> products) {
+        int pages = 1;
+        int remainder = 0;
+
+        if(products.size()>15) {
+            pages = products.size()/15;
+            remainder = modulus(products);
+            if(remainder !=0) {
+                pages++;
+            }
+        }
+        return pages;
+    }
+
+    @Override
+    public int modulus(ArrayList<Products> products) {
+        int modulus = 0;
+        modulus = products.size() % 15;
+
+        return modulus;
+    }
+
+    @Override
+    public ArrayList<Integer> getPageArray(int pages) {
+        ArrayList<Integer> pageArray = new ArrayList<>();
+
+        for(int i = 1; i<=pages; i++) {
+            pageArray.add(i);
+        }
+
+        return pageArray;
+    }
+
+    @Override
+    public ArrayList<Products> list15(ArrayList<Products> productList, int page) {
+        ArrayList<Products> list15 = new ArrayList<>();
+
+        if(modulus(productList) >= 1 && page == countPages(productList)) {
+            for(int i = (page * 15) - 15; i < (page*15)-15+modulus(productList); i++) {
+                list15.add(productList.get(i));
+            }
+        }
+        else {
+            for (int i = (page * 15) - 15; i < page * 15; i++) {
+                list15.add(productList.get(i));
+            }
+        }
+
+        return list15;
     }
 }

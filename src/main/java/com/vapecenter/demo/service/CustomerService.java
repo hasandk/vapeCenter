@@ -27,4 +27,8 @@ public interface CustomerService {
     Products addProduct(Products product);
 
     boolean createOrder(List<Cart> cart, Checkout checkout, ShipingMethod shipingMethod, double totalPrice);
+    int countPages(ArrayList<Products> products);
+    int modulus(ArrayList<Products> products);
+    ArrayList<Integer> getPageArray(int pages);
+    ArrayList<Products> list15(ArrayList<Products> productList, int page);
 }
