@@ -173,7 +173,6 @@ public class CustomerController {
         pages = customerService.countPages(customerService.getProducts());
 
         pageList = customerService.getPageArray(pages);
-        System.out.println("Hey DER!!!!! "+pageList.get(2));
 
         if(session.getAttribute("cart") == null){
             session.setAttribute("cart", cartList);
