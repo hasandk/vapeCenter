@@ -253,6 +253,7 @@ public class CustomerRepoImpl implements CustomerRepo {
         Orders orders = template.queryForObject(sql, rowMapper);
 
         int orderId = orders.getOrderId();
+        log.info("orderId = " + orderId);
 
         //add products to order
 
