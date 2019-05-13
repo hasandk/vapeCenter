@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Categori</title>
+</head>
+<body>
+
+    <h1 th:text="${categoryName}"></h1>
+    <span class="active" th:each="product : ${productList}">
+
+        <form th:method="Put" th:action="@{/category}" th:object="${cart}">
+            <span name="name" th:text="${product.name}"></span>
+            <input type="hidden" name="productId" th:value="${product.productId}"/>
+            <input type="number" th:name="amount" value="1"/>
+
+            <button href="/listProducts" type="submit" value="Tilføj">Læg i kurv</button>
+
+        </form>
+
+        <a th:href="${'/viewProduct/' + product.productId}">Se produkt</a>
+
+    </span>
+
+    <br><hr><br>
+
+    <a href="#">Tilbage</a>
+
+    <form>
+        <select>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select> ud af 3
+    </form>
+
+    <a href="#">Næste</a>
+
+</body>
+</html>
