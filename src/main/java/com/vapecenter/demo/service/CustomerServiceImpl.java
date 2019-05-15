@@ -25,6 +25,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     Logger log = Logger.getLogger(CustomerServiceImpl.class.getName());
 
+
+    @Override
+    public ArrayList<Category> getAllCategories() {
+        return customerRepo.getAllCategories();
+    }
+
     @Override
     public Users getUser(int id) {
         return customerRepo.getUser(id);
@@ -123,6 +129,4 @@ public class CustomerServiceImpl implements CustomerService {
 
         return list15;
     }
-
-
 }

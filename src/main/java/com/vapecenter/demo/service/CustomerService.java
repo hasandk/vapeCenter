@@ -8,6 +8,8 @@ import java.util.List;
 
 @Service
 public interface CustomerService {
+    ArrayList<Category> getAllCategories();
+
     Users getUser(int id);
     ArrayList<Products> getProducts();
 
@@ -28,5 +30,4 @@ public interface CustomerService {
     int modulus(ArrayList<Products> products);
     ArrayList<Integer> getPageArray(int pages);
     ArrayList<Products> list15(ArrayList<Products> productList, int page);
-
 }

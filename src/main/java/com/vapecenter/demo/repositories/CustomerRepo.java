@@ -24,4 +24,6 @@ public interface CustomerRepo {
     AboutUs getAboutInfo(int aboutUsId);
 
     Products addProduct(Products product);
+
+    ArrayList<Category> getAllCategories();
 }
