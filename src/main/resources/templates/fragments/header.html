@@ -44,8 +44,12 @@
         <li class = "nav-item">
             <a class ="btn btn-outline-dark btn-sm" href= "/cart"><span class="fas fa-shopping-cart">cart</span> </a>
         </li>
-            <!--<li class = "fas fa-search-location">
-             <a class = "nav-item" href = "/search"></a>-->
+        <li class="nav-item">
+            <form action="/" th:action="@{/search}" method="post">
+            <input type="text" th:name="searchProduct" placeholder="Søg efter produkt...">
+            <button type="submit">Søg</button>
+            </form>
+        </li>
         </ul>
     </nav>
 </div>
