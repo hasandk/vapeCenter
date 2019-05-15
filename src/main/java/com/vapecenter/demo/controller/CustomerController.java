@@ -60,6 +60,10 @@ public class CustomerController {
         categories = customerService.getAllCategories();
         model.addAttribute("categories", categories);
 
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
         return "index";
     }
 
@@ -428,10 +432,5 @@ public class CustomerController {
         log.info("paymentAccept postmapping called...");
 
         return "creditcardAccept";
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "test";
     }
 }
