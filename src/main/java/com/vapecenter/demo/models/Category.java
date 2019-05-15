@@ -40,7 +40,6 @@ public class Category {
         this.categoryDescription = categoryDescription;
     }
 
-<<<<<<< HEAD
     public int getCategorySubList() {
         return categorySubList;
     }
@@ -49,8 +48,6 @@ public class Category {
         this.categorySubList = categorySubList;
     }
 
-=======
->>>>>>> master
     @Override
     public String toString() {
         return "Category{" +
