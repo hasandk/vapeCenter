@@ -28,4 +28,7 @@ public interface CustomerRepo {
     Products addProduct(Products product);
 
     boolean createOrder(List<Cart> cart, Checkout checkout, ShipingMethod shipingMethod, double totalPrice);
+
+    ArrayList<Category> getAllCategories();
+
 }

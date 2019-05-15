@@ -8,6 +8,8 @@ import java.util.List;
 
 @Service
 public interface CustomerService {
+    ArrayList<Category> getAllCategories();
+
     Users getUser(int id);
     ArrayList<Products> getProducts();
 

@@ -46,15 +46,19 @@ public class CustomerController {
     private final String SEARCHRESULT = "searchResult";
     private final String LISTPRODUCTS = "listProducts";
 
-    //List<Products> productsList = new ArrayList<>();
-
     Logger log = Logger.getLogger(CustomerController.class.getName());
 
     @GetMapping("/")
-    public String index(HttpSession session){
+    public String index(HttpSession session, Model model){
         log.info("index called");
-        Users user = customerService.getUser(1);
-        log.info(""+user.getFirstName()+" "+user.getEmail());
+        ArrayList<Category> categories;
+
+        if(session.getAttribute("cart") == null){
+            session.setAttribute("cart", cartList);
+        }
+
+        categories = customerService.getAllCategories();
+        model.addAttribute("categories", categories);
 
         if(session.getAttribute("cart") == null){
             session.setAttribute("cart", cartList);

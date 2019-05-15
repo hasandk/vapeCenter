@@ -1,0 +1,7 @@
+a:hover {
+    color: #fffafe;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
