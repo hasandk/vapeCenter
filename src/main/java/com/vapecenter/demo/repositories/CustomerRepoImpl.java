@@ -289,5 +289,29 @@ public class CustomerRepoImpl implements CustomerRepo {
         return true;
     }
 
+    public ArrayList<Category> getAllCategories() {
+            String sql = "SELECT categoryId, categoryName, categoryDescription, categorySubList FROM Category";
+            return this.template.query(sql, new ResultSetExtractor<ArrayList<Category>>() {
+                @Override
+                public ArrayList<Category> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                    int categoryId, categorySubList;
+                    String categoryName, categoryDescription;
+                    ArrayList<Category> subCategories = new ArrayList<>();
+
+                    while (rs.next()) {
+                        categoryId = rs.getInt("categoryId");
+                        categoryName = rs.getString("categoryName");
+                        categoryDescription = rs.getString("categoryDescription");
+                        categorySubList = rs.getInt("categorySubList");
+
+                        subCategories.add(new Category(categoryId, categoryName, categoryDescription, categorySubList));
+                    }
+                    return subCategories;
+                }
+            });
+
+    }
 }
+
+
 

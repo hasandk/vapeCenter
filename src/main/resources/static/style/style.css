@@ -103,3 +103,11 @@ div#aboutUsImage img{
 div#aboutUsDetails{
 
 }
+
+a:hover {
+    color: #fffafe;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

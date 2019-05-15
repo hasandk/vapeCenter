@@ -1,17 +1,19 @@
 package com.vapecenter.demo.models;
 
 public class Category {
-    int categoryId;
-    String categoryName;
-    String categoryDescription;
+    private int categoryId;
+    private String categoryName;
+    private String categoryDescription;
+    private int categorySubList;
 
     public Category() {
     }
 
-    public Category(int categoryId, String categoryName, String categoryDescription) {
+    public Category(int categoryId, String categoryName, String categoryDescription, int categorySubList) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.categoryDescription = categoryDescription;
+        this.categorySubList = categorySubList;
     }
 
     public int getCategoryId() {
@@ -36,6 +38,14 @@ public class Category {
 
     public void setCategoryDescription(String categoryDescription) {
         this.categoryDescription = categoryDescription;
+    }
+
+    public int getCategorySubList() {
+        return categorySubList;
+    }
+
+    public void setCategorySubList(int categorySubList) {
+        this.categorySubList = categorySubList;
     }
 
     @Override
