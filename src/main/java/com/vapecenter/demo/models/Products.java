@@ -1,9 +1,9 @@
 package com.vapecenter.demo.models;
 
 public class Products {
-    int productId, stock;
+    int productId, stock, fk_categoryId;
     String name, description, pictureLink;
-    Boolean active;
+    int active;
     double price;
 
     public Products() {
@@ -13,9 +13,10 @@ public class Products {
         this.name = name;
     }
 
-    public Products(int productId, int stock, String name, String description, String pictureLink, Boolean active, double price) {
+    public Products(int productId, int stock, int fk_categoryId, String name, String description, String pictureLink, int active, double price) {
         this.productId = productId;
         this.stock = stock;
+        this.fk_categoryId = fk_categoryId;
         this.name = name;
         this.description = description;
         this.pictureLink = pictureLink;
@@ -63,11 +64,11 @@ public class Products {
         this.pictureLink = pictureLink;
     }
 
-    public Boolean getActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(int active) {
         this.active = active;
     }
 
@@ -79,11 +80,20 @@ public class Products {
         this.price = price;
     }
 
+    public int getFk_categoryId() {
+        return fk_categoryId;
+    }
+
+    public void setFk_categoryId(int fk_categoryId) {
+        this.fk_categoryId = fk_categoryId;
+    }
+
     @Override
     public String toString() {
         return "Products{" +
                 "productId=" + productId +
                 ", stock=" + stock +
+                ", fk_categoryId=" + fk_categoryId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", pictureLink='" + pictureLink + '\'' +

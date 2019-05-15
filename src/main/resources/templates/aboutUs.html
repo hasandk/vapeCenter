@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Om VapeCenter</title>
+</head>
+<body>
+<img th:src="${aboutUs.pictureLink}"/><br>
+Om os:<br>
+<span th:text="${aboutUs.description}"></span><br>
+
+Adresse:<br>
+<span th:text="${aboutUs.streetName + ' ' + aboutUs.zipcode}"></span>
+</body>
+</html>

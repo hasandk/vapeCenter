@@ -1,0 +1,23 @@
+p.dropdownMenu {
+    position: relative;
+    display: -moz-inline-block;
+
+}
+
+
+ul.subMenu{
+    display: none;
+    position: absolute;
+    background-color: aqua;
+    min-width: 160px;
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+a:hover {
+    color: #fffafe;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

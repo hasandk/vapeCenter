@@ -12,15 +12,41 @@
     <tr class="active" th:each="product : ${productList}">
 
             <form th:method="Put" th:action="@{/listProducts}" th:object="${cart}">
-                <td name="name" th:text="${product.name}"></td>
+                <a th:href="'/viewProduct/'+${product.productId}"><td name="name" th:text="${product.name}"></td></a>
+                <td name="price" th:text="'Pris: '+${product.price}+' Kr.'"></td>
                 <input type="hidden" name="productId" th:value="${product.productId}"/>
-                <input type="number" th:name="amount" value="1"/>
+                <input type="number" th:name="amount" value="1" />
 
-                <button href="/listProducts" type="submit" value="Tilføj"></button>
+                <button href="/listProducts" type="submit" value="Tilføj">Læg i Kurv</button>
 
             </form>
 
     </tr>
+
+    <tr th:if="${currentPage-1 != 0}">
+        <a th:href="'/listProducts/'+${currentPage-1}">Tilbage</a>
+    </tr>
+
+    <!--<p th:text="${'På lager: ' + product.stock}"></p>
+    <form action="myservlet.do" method="POST">
+    <select name="myselect" id="myselect" onchange="this.form.submit()">
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+        <option value="4">Four</option>
+    </select>
+</form>-->
+
+<form th:method="post" th:action="@{/listProducts/}">
+    <select name="page" onchange='this.form.submit()'>
+        <option th:each="pageFromArray : ${pageArray}" th:value="${pageFromArray}" th:text="${pageFromArray}"  th:selected="${pageFromArray==currentPage}"></option>
+    </select><h5 th:text="'ud af ' +${maxPages}"></h5>
+</form>
+
+    <tr th:if="${currentPage < maxPages}">
+        <a th:href="'/listProducts/'+${currentPage+1}">Næste</a>
+    </tr>
+
 
 </body>
 </html>
