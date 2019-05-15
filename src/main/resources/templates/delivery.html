@@ -4,15 +4,18 @@
     <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
 </head>
 <body>
-    <h1>Gå til kassen</h1>
-    <h2>Vælg leverings metode</h2>
-    <form method="post" th:action="@{/delivery}" th:object="${delivery}">
-        <span th:each="shippingMethod : ${shippingMethods}">
-            <input type="radio" name="shippingId" th:value="${shippingMethod.shippingId}"> <span th:text="${shippingMethod.companyName}"></span> <br>
-        </span><br>
+    <div class="container">
+        <h1>Gå til kassen</h1>
+        <h2>Vælg leverings metode</h2>
+        <form method="post" th:action="@{/delivery}" th:object="${delivery}">
+            <div th:each="shippingMethod : ${shippingMethods}" class="custom-control custom-radio mt-2">
+                <input type="radio" th:id="${'option' + shippingMethod.shippingId}" name="shippingId" th:value="${shippingMethod.shippingId}" class="custom-control-input" required>
+                <label th:for="${'option' + shippingMethod.shippingId}" th:text="${shippingMethod.companyName + ' (+' + shippingMethod.price + ' DKK)'}" class="custom-control-label"></label> <br>
+            </div>
 
-        <button type="button">Tilbage</button>
-        <button type="submit">Næste</button>
-    </form>
+            <button type="button" class="btn btn-outline-dark mt-3"  onclick="location.href='/checkout';">Tilbage</button>
+            <button type="submit" class="btn btn-dark mt-3">Næste</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta http-equiv="refresh" content="3;url=/paymentProcess" />
-    <meta charset="UTF-8">
-    <title>Credit card processed</title>
+<head th:include="fragments/head :: styles">
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
 </head>
 <body>
-Your crediccard have been accepted
+    <div class="container">
+        <h1 class="text-success"><i class="fas fa-check"></i> Betaling Gennemført</h1>
+        <a href="/" class="btn btn-dark"><i class="fas fa-cash-register"></i> Gå til forsiden</a>
+    </div>
 </body>
 </html>

@@ -4,47 +4,49 @@
     <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
 </head>
 <body>
-    <h1>Indkøbskurv</h1>
-    <h2>Indhold i indkøbskurv</h2>
+    <div class="container">
+        <h1><i class="fas fa-shopping-cart"></i> Indkøbskurv</h1>
+        <h2>Indhold i indkøbskurv</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Produktnavn:</th>
-                <th>Pris pr. enhed</th>
-                <th>Pris for alle enheder</th>
-                <th>Antal enheder</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="cart : ${carts}">
-                <span th:each="product : ${products}">
-                    <span th:if="${cart.productId == product.productId}">
-                        <td th:text="${product.name}">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Produktnavn:</th>
+                    <th>Pris pr. enhed</th>
+                    <th>Pris for alle enheder</th>
+                    <th>Antal enheder</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cart : ${carts}">
+                    <span th:each="product : ${products}">
+                        <span th:if="${cart.productId == product.productId}">
+                            <td th:text="${product.name}">
 
-                        </td>
-                        <td th:text="${product.price} + ' kr.'"></td>
-                        <td th:text="${product.price * cart.amount} + ' kr.'"></td>
-                        <td>
-                            <form action="/editCart" method="post">
-                                <input type="hidden" th:value="${cart.productId}" name="productId">
-                                <input type="number" th:value="${cart.amount}" name="amount">
-                                <button type="submit">Opdater</button>
-                            </form>
-                            <form action="/deleteCart" method="post">
-                                <input type="hidden" th:value="${cart.productId}" name="productId">
-                                <button type="submit">Slet</button>
-                            </form>
-                        </td>
+                            </td>
+                            <td th:text="${product.price} + ' kr.'"></td>
+                            <td th:text="${product.price * cart.amount} + ' kr.'"></td>
+                            <td>
+                                <form action="/editCart" class="form-inline d-block mr-2 float-left" method="post">
+                                    <input type="hidden" th:value="${cart.productId}" class="form-control" name="productId">
+                                    <input type="number" th:value="${cart.amount}" class="form-control mr-2" name="amount">
+                                    <button type="submit" class="btn btn-dark"><i class="fas fa-sync-alt"></i> Opdater</button>
+                                </form>
+                                <form action="/deleteCart" class="form-inline d-block float-left" method="post">
+                                    <input type="hidden" th:value="${cart.productId}" name="productId">
+                                    <button type="submit"class="btn btn-danger"><i class="fas fa-trash-alt"></i> Slet</button>
+                                </form>
+                            </td>
+                        </span>
                     </span>
-                </span>
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+            </tbody>
+        </table>
 
-    <h3>Total pris: <span th:text="${total}"></span> kr.</h3>
-    <span th:if="${readyToCheckout}">
-        <a href="/checkout">Gå til betaling</a>
-    </span>
+        <h3>Total pris: <span th:text="${total}"></span> kr.</h3>
+        <span th:if="${readyToCheckout}">
+            <a href="/checkout" class="btn btn-success"><i class="fas fa-cash-register"></i> Gå til betaling</a>
+        </span>
+    </div>
 </body>
 </html>

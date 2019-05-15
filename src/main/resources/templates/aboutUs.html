@@ -4,11 +4,22 @@
     <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
 </head>
 <body>
-<img th:src="${aboutUs.pictureLink}"/><br>
-Om os:<br>
-<span th:text="${aboutUs.description}"></span><br>
+    <div class="container">
+        <div id="aboutUsImage" class="float-left w-50">
+            <img th:src="${'/image/' + aboutUs.pictureLink}"/>
+        </div>
 
-Adresse:<br>
-<span th:text="${aboutUs.streetName + ' ' + aboutUs.zipcode}"></span>
+        <div id="aboutUsDetails" class="float-left w-50 p-5 bg-light">
+            <h1>Om os</h1>
+
+            <p th:text="${aboutUs.description}"></p>
+
+            <b>Adresse:</b><br>
+            <p th:text="${aboutUs.streetName + ', ' + aboutUs.zipcode}"></p>
+
+            <b>Telefon:</b><br>
+            <p th:text="${aboutUs.phone}"></p>
+        </div>
+    </div>
 </body>
 </html>

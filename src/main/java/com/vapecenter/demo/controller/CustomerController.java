@@ -33,6 +33,8 @@ public class CustomerController {
         productsList.add(new Products(4, "Ecovape", 320));
         productsList.add(new Products(5, "DSBvape", 1500));*/
 
+        //cartList.add(new Cart(2, 3));
+
     }
 
     @Autowired
@@ -255,7 +257,7 @@ public class CustomerController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("pageArray", pageList);
 
-        return "listProducts";
+        return "redirect:/listProducts/1";
     }
 
     @GetMapping("/listProducts/{page}")
@@ -314,7 +316,7 @@ public class CustomerController {
 
         model.addAttribute("productList", customerService.getProducts());
         model.addAttribute("cart", cartNew);
-        return "listProducts";
+        return "redirect:/listProducts/";
     }
 
     @GetMapping("viewProduct/{productId}")
@@ -361,17 +363,35 @@ public class CustomerController {
     }
 
     @GetMapping("/category/{categoryId}")
-    public String category(@PathVariable("categoryId") int categoryId, Model model, Cart cart, HttpSession session) {
+    public String category(@PathVariable("categoryId") int categoryId){
+
+        return "redirect:/" + CATEGORY + "/" + categoryId + "/1";
+    }
+
+    @GetMapping("/category/{categoryId}/{page}")
+    public String category(@PathVariable("categoryId") int categoryId ,@PathVariable("page") int page ,Model model, Cart cart, HttpSession session) {
         log.info("category called...");
+
+        ArrayList<Products> list15 = new ArrayList<>();
+        ArrayList<Products> productList = customerService.getProductsByCategory(categoryId);
+        int maxPages = customerService.countPages(productList);
+        ArrayList<Integer> pageList = customerService.getPageArray(maxPages);
+        log.info("listProducts called... currentPage="+page+" maxPages="+maxPages);
+
+        if(page>=1) {
+
+
+            list15 = customerService.list15(productList, page);
+        }
 
         if(session.getAttribute("cart") == null){
             session.setAttribute("cart", cartList);
         }
 
-        /*ArrayList<Products> test = new ArrayList<>();
-        test = customerService.getProducts();
-        log.info(test.get(1).getProductId()+"");*/
-        model.addAttribute("productList", customerService.getProductsByCategory(categoryId));
+        model.addAttribute("productList", list15);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPages", maxPages);
+        model.addAttribute("pageArray", pageList);
         model.addAttribute("cart", cart);
         model.addAttribute("categoryName", customerService.getCategoryById(categoryId).getCategoryName());
 

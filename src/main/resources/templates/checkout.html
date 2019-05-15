@@ -4,47 +4,66 @@
     <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
 </head>
 <body>
-    <h1>Gå til kassen</h1>
-    <h2>Udfyld dine informationer</h2>
-    <form method="post" th:action="@{/checkout}" th:object="${checkout}">
+    <div class="container">
+        <h1>Gå til kassen</h1>
+        <h2>Udfyld dine informationer</h2>
+        <form method="post" th:action="@{/checkout}" th:object="${checkout}" class="needs-validation">
 
-        <label for="firstName">Fornavn:</label>
-        <input type="text" id="firstName" th:name="firstName" required>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="firstName">Fornavn:</label>
+                    <input type="text" id="firstName" class="form-control" th:name="firstName" required>
+                    <div class="invalid-feedback">Fornavn påkrævet</div>
+                </div>
 
-        <br><br>
+                <div class="form-group col-md-4">
+                    <label for="lastName">Efternavn:</label>
+                    <input type="text" id="lastName" class="form-control" th:name="lastName" required>
+                    <div class="invalid-feedback">Efternavn påkrævet</div>
+                </div>
+            </div>
 
-        <label for="lastName">Efternavn:</label>
-        <input type="text" id="lastName" th:name="lastName" required>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" class="form-control" th:name="email" required>
+                    <div class="invalid-feedback">Email påkrævet</div>
+                </div>
+            </div>
 
-        <br><br>
+            <div class="form-row">
+                <div class="form-group  col-md-8">
+                    <label for="phone">Telefon nr.:</label>
+                    <input type="number" id="phone" class="form-control" th:name="phone" required>
+                    <div class="invalid-feedback">Telefon nr. påkrævet</div>
+                </div>
+            </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" th:name="email" required>
+            <div class="form-row">
+                <div class="form-group  col-md-8">
+                    <label for="street">Vej og nr.:</label>
+                    <input type="text" id="street" class="form-control" th:name="street" required>
+                    <div class="invalid-feedback">vej og nr. påkrævet</div>
+                </div>
+            </div>
 
-        <br><br>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="city">By:</label>
+                    <input type="text" id="city" class="form-control" th:name="city" required>
+                    <div class="invalid-feedback">By påkrævet</div>
+                </div>
 
-        <label for="phone">telefon nr.:</label>
-        <input type="number" id="phone" th:name="phone" required>
+                <div class="form-group col-md-2">
+                    <label for="zipcode">Post nr.:</label>
+                    <input type="number" id="zipcode" class="form-control" th:name="zipcode" required>
+                    <div class="invalid-feedback">Post nr. påkrævet</div>
+                </div>
+            </div>
 
-        <br><br>
-
-        <label for="street">Vej og nr.:</label>
-        <input type="text" id="street" th:name="street" required>
-
-        <br><br>
-
-        <label for="city">By:</label>
-        <input type="text" id="city" th:name="city" required>
-
-        <br><br>
-
-        <label for="zipcode">post nr.:</label>
-        <input type="number" id="zipcode" th:name="zipcode" required>
-
-        <br><br>
-
-        <button type="button">Tilbage</button>
-        <button type="submit">Næste</button>
-    </form>
+            <button type="button" class="btn btn-outline-dark"  onclick="location.href='/cart';">Tilbage</button>
+            <button type="submit" class="btn btn-dark">Næste</button>
+        </form>
+    </div>
 </body>
 </html>

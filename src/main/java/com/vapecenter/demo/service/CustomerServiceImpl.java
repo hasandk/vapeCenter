@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    private final int PRODUCTS_PR_PAGE = 16;
+
     @Autowired
     CustomerRepo customerRepo;
 
@@ -87,8 +89,8 @@ public class CustomerServiceImpl implements CustomerService {
         int pages = 1;
         int remainder = 0;
 
-        if(products.size()>15) {
-            pages = products.size()/15;
+        if(products.size()>PRODUCTS_PR_PAGE) {
+            pages = products.size()/PRODUCTS_PR_PAGE;
             remainder = modulus(products);
             if(remainder !=0) {
                 pages++;
@@ -100,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public int modulus(ArrayList<Products> products) {
         int modulus = 0;
-        modulus = products.size() % 15;
+        modulus = products.size() % PRODUCTS_PR_PAGE;
 
         return modulus;
     }
@@ -121,12 +123,12 @@ public class CustomerServiceImpl implements CustomerService {
         ArrayList<Products> list15 = new ArrayList<>();
 
         if(modulus(productList) >= 1 && page == countPages(productList)) {
-            for(int i = (page * 15) - 15; i < (page*15)-15+modulus(productList); i++) {
+            for(int i = (page * PRODUCTS_PR_PAGE) - PRODUCTS_PR_PAGE; i < (page*PRODUCTS_PR_PAGE)-PRODUCTS_PR_PAGE+modulus(productList); i++) {
                 list15.add(productList.get(i));
             }
         }
         else {
-            for (int i = (page * 15) - 15; i < page * 15; i++) {
+            for (int i = (page * PRODUCTS_PR_PAGE) - PRODUCTS_PR_PAGE; i < page * PRODUCTS_PR_PAGE; i++) {
                 list15.add(productList.get(i));
             }
         }

@@ -4,46 +4,60 @@
     <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
 </head>
 <body>
+    <div class="container">
+        <h1>Alle Producter</h1>
+        <!--<table class="table table-borderless">
+            <tr class="active" th:each="product : ${productList}">
+                <td>
+                    <a th:href="'/viewProduct/'+${product.productId}"><img th:src="${product.pictureLink}" height = "70"/></a>
+                </td>
+                <td>
+                    <a th:href="'/viewProduct/'+${product.productId}" th:text="${product.name}"></a><br>
+                    <span name="price" th:text="'Pris: '+${product.price}+' Kr.'"></span>
+                </td>
+                <td>
+                    <form th:method="Put" th:action="@{/listProducts}" th:object="${cart}" class="form-inline">
+                        <input type="hidden" name="productId" th:value="${product.productId}"/>
+                        <input type="number" th:name="amount" value="1" class="form-control" />
 
-    <h1>Produkter</h1>
-    <tr class="active" th:each="product : ${productList}">
+                        <button type="submit" value="Tilføj" class="btn btn-dark"><i class="fas fa-cart-plus"></i> Læg i Kurv</button>
 
-            <form th:method="Put" th:action="@{/listProducts}" th:object="${cart}">
-                <a th:href="'/viewProduct/'+${product.productId}"><td name="name" th:text="${product.name}"></td></a>
-                <td name="price" th:text="'Pris: '+${product.price}+' Kr.'"></td>
-                <input type="hidden" name="productId" th:value="${product.productId}"/>
-                <input type="number" th:name="amount" value="1" />
+                    </form>
+                </td>
+            </tr>
+        </table>-->
 
-                <button href="/listProducts" type="submit" value="Tilføj">Læg i Kurv</button>
+        <div id="productList">
+            <a th:href="'/viewProduct/'+${product.productId}" class="productItem" th:each="product : ${productList}">
+                <img th:src="${product.pictureLink}"/>
+                <span class="productName" th:text="${product.name}"></span>
+                <span class="productPrice" th:text="${product.price}+' DKK'"></span>
+            </a>
+        </div>
 
+        <div id="pageSelect" class="p-6">
+
+            <a th:if="${currentPage-1 != 0}" th:href="'/listProducts/'+${currentPage-1}" class="btn btn-dark d-block float-left">Tilbage</a>
+
+            <!--<p th:text="${'På lager: ' + product.stock}"></p>
+            <form action="myservlet.do" method="POST">
+            <select name="myselect" id="myselect" onchange="this.form.submit()">
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+                <option value="4">Four</option>
+            </select>
+            </form>-->
+
+            <form th:method="post" th:action="@{/listProducts/}" class="form-inline d-block mx-2 float-left">
+                <select name="page" onchange='this.form.submit()'class="form-control mr-2">
+                    <option th:each="pageFromArray : ${pageArray}" th:value="${pageFromArray}" th:text="${pageFromArray}"  th:selected="${pageFromArray==currentPage}"></option>
+                </select><span th:text="'ud af ' +${maxPages}"></span>
             </form>
 
-    </tr>
+            <a th:if="${currentPage < maxPages}" th:href="'/listProducts/'+${currentPage+1}" class="btn btn-dark d-block float-left">Næste</a>
+        </div>
 
-    <tr th:if="${currentPage-1 != 0}">
-        <a th:href="'/listProducts/'+${currentPage-1}">Tilbage</a>
-    </tr>
-
-    <!--<p th:text="${'På lager: ' + product.stock}"></p>
-    <form action="myservlet.do" method="POST">
-    <select name="myselect" id="myselect" onchange="this.form.submit()">
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-        <option value="4">Four</option>
-    </select>
-</form>-->
-
-<form th:method="post" th:action="@{/listProducts/}">
-    <select name="page" onchange='this.form.submit()'>
-        <option th:each="pageFromArray : ${pageArray}" th:value="${pageFromArray}" th:text="${pageFromArray}"  th:selected="${pageFromArray==currentPage}"></option>
-    </select><h5 th:text="'ud af ' +${maxPages}"></h5>
-</form>
-
-    <tr th:if="${currentPage < maxPages}">
-        <a th:href="'/listProducts/'+${currentPage+1}">Næste</a>
-    </tr>
-
-
+    </div>
 </body>
 </html>

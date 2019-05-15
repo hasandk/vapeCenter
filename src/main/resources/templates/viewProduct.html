@@ -5,27 +5,33 @@
 </head>
 <div class="container">
 
-    <h1>Display Product</h1>
+    <div id="productImage" class="float-left w-50 p-5">
+        <img th:src="${product.pictureLink}"/>
+    </div>
 
-    <input type="hidden" th:field="${product.productId}">
+    <div id="productDetails" class="float-left w-50 p-5 bg-light">
 
-    <p th:text="${'Beskrivelse: ' + product.description}"></p>
-    <p th:text="${'Produkt: ' + product.name}"></p>
-    <p th:text="${'Pris: ' + product.price}"></p>
-    <p th:text="${'På lager: ' + product.stock}"></p>
-    <p th:text="${'Pris: ' + product.price}"></p>
+        <h1 th:text="${product.name}"></h1>
 
 
+        <h3 th:text="${product.price + ' DKK'}"></h3>
 
-    <img th:src="${product.pictureLink}" width="200" height = "200"/>
+        <p>
+            <b>Beskrivelse:</b><br>
+            <span th:text="${product.description}"></span>
+        </p>
 
-    <form th:method="Put" th:action="@{/viewProduct/}" th:object="${cart}">
-        <input type="hidden" name="productId" th:value="${product.productId}"/>
-        <input type="number" th:name="amount" value="1" min="1" max="19"/>
+        <p><i class="fas fa-box"></i>  <span th:text="${product.stock + ' på lager'}"></span></p>
 
-        <button href="/viewProduct/}" class="btn btn-primary" type="submit" value="Tilføj"></button>
+        <form th:method="Put" th:action="@{/viewProduct/}" th:object="${cart}" class="form-inline">
+            <input type="hidden" name="productId" th:value="${product.productId}"/>
+            <input type="number" th:name="amount" value="1" min="1" max="19" class="form-control mr-2"/>
 
-    </form>
+            <button href="/viewProduct/}" class="btn btn-dark" type="submit" value="Tilføj"><i class="fas fa-cart-plus"></i> Læg i Kurv</button>
+
+        </form>
+
+    </div>
 
 </div>
 </body>
