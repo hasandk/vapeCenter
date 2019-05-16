@@ -311,7 +311,61 @@ public class CustomerRepoImpl implements CustomerRepo {
             });
 
     }
+
+    @Override
+    public Products updateProducts(Products products) {
+        String sql = "UPDATE Products SET name = ?, description = ?, price = ?, pictureLink = ? ,active = ?,stock = ?, WHERE productId = ?";
+        String name = products.getName();
+        String description = products.getDescription();
+        double price = products.getPrice();
+        String pictureLink = products.getPictureLink();
+        int active = products.getActive();
+        int stock = products.getStock();
+
+        this.template.update(sql, name, description, price, pictureLink, active, stock);
+        return products;
+    }
+
+    @Override
+    public ArrayList<Products> getAllProducts() {
+        String sql = "SELECT productId, name, description, price, pictureLink, active, stock FROM Products";
+        return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
+            @Override
+            public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int productId, active, stock;
+                String name, description, pictureLink;
+                double price;
+                ArrayList<Products> productList = new ArrayList<>();
+
+                while (rs.next()) {
+                    productId = rs.getInt("productId");
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    price = rs.getDouble("price");
+                    pictureLink = rs.getString("pictureLink");
+                    active = rs.getInt("active");
+                    stock = rs.getInt("stock");
+
+                    productList.add(new Products(productId, active, stock, name, description, pictureLink, price));
+                }
+                return productList;
+            }
+        });
+    }
+
+    @Override
+    public Products findProduct(int productId) {
+            String sql = "SELECT * FROM VapeCenter.Products WHERE productId = ?";
+            log.info("id from producs :" + productId);
+
+            RowMapper<Products> rowMapper = new BeanPropertyRowMapper<>(Products.class);
+
+            Products products = template.queryForObject(sql, rowMapper, productId);
+
+        return products;
+    }
 }
+
 
 
 

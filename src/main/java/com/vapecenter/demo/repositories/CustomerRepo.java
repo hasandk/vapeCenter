@@ -30,5 +30,8 @@ public interface CustomerRepo {
     boolean createOrder(List<Cart> cart, Checkout checkout, ShipingMethod shipingMethod, double totalPrice);
 
     ArrayList<Category> getAllCategories();
+    Products updateProducts (Products products);
+    ArrayList<Products> getAllProducts();
+    Products findProduct (int productId);
 
 }

@@ -539,4 +539,27 @@ public class CustomerController {
 
         return "creditcardAccept";
     }
+
+    @GetMapping("/editProduct/{id}")
+    public String editProduct (@PathVariable ("id") int id, Model model ){
+        log.info("editProduct getmapping is called ....");
+
+        model.addAttribute("product", customerService.findProduct(id));
+
+        return "editProduct";
+    }
+
+    @PutMapping ("/editProduct")
+    public String editProduct ( @ModelAttribute Products products,Model model){
+        log.info("editProducts putmapping called...");
+        customerService.updateProducts(products);
+
+        model.addAttribute("products", customerService.getAllProducts());
+
+
+        return "redirect:/listProducts";
+    }
+
+
+
 }

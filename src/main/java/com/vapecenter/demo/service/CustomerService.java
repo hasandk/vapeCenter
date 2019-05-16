@@ -33,4 +33,10 @@ public interface CustomerService {
     int modulus(ArrayList<Products> products);
     ArrayList<Integer> getPageArray(int pages);
     ArrayList<Products> list15(ArrayList<Products> productList, int page);
+
+    Products updateProducts(Products products);
+
+    ArrayList<Products> getAllProducts();
+    Products findProduct (int productId);
+
 }
