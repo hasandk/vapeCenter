@@ -37,4 +37,5 @@ public interface CustomerService {
     ArrayList<Products> getAllProducts();
 
     void updateStock(Integer productId, Integer stock);
+    void removeProduct(int id);
 }

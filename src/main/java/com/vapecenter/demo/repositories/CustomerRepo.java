@@ -34,4 +34,5 @@ public interface CustomerRepo {
     ArrayList<Category> getAllCategories();
 
     void updateStock(Integer productId, Integer stock);
+    void removeProduct(int id);
 }

@@ -552,11 +552,31 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/editStock", method = RequestMethod.POST)
-    public String editCart(@RequestParam("productId")Integer productId, @RequestParam("stock")Integer stock) throws Exception{
+    public String editCart(@RequestParam("productId")Integer productId, @RequestParam("stock")Integer stock) throws Exception {
         log.info("editStock is called...");
 
         customerService.updateStock(productId, stock);
 
         return "redirect:/adminListProducts";
+    }
+
+    @GetMapping("/removeProduct/{id}")
+    public String removeProduct(@PathVariable("id") int id, Model model) {
+        log.info("remove product getmapping called...");
+        Products product = customerService.getProductById(id);
+
+        model.addAttribute("product", product);
+
+
+        return "removeProduct";
+    }
+
+    @PutMapping("/removeProduct")
+    public String removeProduct(@ModelAttribute Products product) {
+        log.info("removeProduct putmapping called...");
+        log.info(product.getProductId()+"");
+        customerService.removeProduct(product.getProductId());
+
+        return "redirect:/";
     }
 }

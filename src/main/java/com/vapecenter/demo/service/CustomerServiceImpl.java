@@ -151,4 +151,10 @@ public class CustomerServiceImpl implements CustomerService {
     public void updateStock(Integer productId, Integer stock) {
         customerRepo.updateStock(productId, stock);
     }
+
+    @Override
+    public void removeProduct(int id) {
+        customerRepo.removeProduct(id);
+
+    }
 }

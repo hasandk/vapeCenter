@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles"></head>
+
+<body>
+
+<h1>Vil du slette <span th:text="${product.name}"/>?</h1>
+
+<form th:method="Put" action="/removeProduct" th:object="${product}">
+    <input type="hidden" th:field="${product.productId}">
+
+    <button type="button" class="btn btn-outline-dark mr-2">Anuller</button><button type="submit" class="btn btn-danger">SLET</button>
+</form>
+
+</body>
+</html>
