@@ -47,6 +47,7 @@ public class CustomerController {
     private final String SEARCH = "search";
     private final String SEARCHRESULT = "searchResult";
     private final String LISTPRODUCTS = "listProducts";
+    private final String ADMINLISTPRODUCTS = "adminListProducts";
 
     Logger log = Logger.getLogger(CustomerController.class.getName());
 
@@ -538,5 +539,24 @@ public class CustomerController {
         customerService.createOrder(cart, checkout, shipingMethod, total);
 
         return "creditcardAccept";
+    }
+
+    @GetMapping("/adminListProducts")
+    public String adminListProducts(Model model){
+        log.info("AdminListProducts is called...");
+
+        model.addAttribute("products", customerService.getAllProducts());
+        model.addAttribute("categories",customerService.getAllCategories());
+
+        return ADMINLISTPRODUCTS;
+    }
+
+    @RequestMapping(value = "/editStock", method = RequestMethod.POST)
+    public String editCart(@RequestParam("productId")Integer productId, @RequestParam("stock")Integer stock) throws Exception{
+        log.info("editStock is called...");
+
+        customerService.updateStock(productId, stock);
+
+        return "redirect:/adminListProducts";
     }
 }

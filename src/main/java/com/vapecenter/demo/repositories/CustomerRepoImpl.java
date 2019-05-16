@@ -96,6 +96,38 @@ public class CustomerRepoImpl implements CustomerRepo {
     }
 
     @Override
+    public ArrayList<Products> getAllProducts() {
+        String sql = "SELECT productId, name, description, price, pictureLink, active, stock, categoryName FROM Products\n" +
+                "LEFT JOIN Category\n" +
+                "ON Products.fk_categoryId = Category.categoryId";
+        return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
+            @Override
+            public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int productId, stock;
+                String name, description, pictureLink, categoryName;
+                double price;
+                int active;
+                ArrayList<Products> products = new ArrayList<>();
+
+                while (rs.next()) {
+                    productId = rs.getInt("productId");
+                    name = rs.getString("name");
+                    categoryName = rs.getString("categoryName");
+                    description = rs.getString("description");
+                    price = rs.getDouble("price");
+                    pictureLink = rs.getString("pictureLink");
+                    active = rs.getInt("active");
+                    stock = rs.getInt("stock");
+
+                    products.add(new Products(productId, stock, name, description, pictureLink, categoryName, active, price));
+                }
+                return products;
+            }
+        });
+
+    }
+
+    @Override
     public ArrayList<Products> getProductsByCategory(int categoryId) {
         String sql = "SELECT * FROM Products WHERE active =1 AND fk_categoryId = ?";
         return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
@@ -310,6 +342,13 @@ public class CustomerRepoImpl implements CustomerRepo {
                 }
             });
 
+    }
+
+    @Override
+    public void updateStock(Integer productId, Integer stock) {
+        String sql = "UPDATE VapeCenter.Products SET stock = ? WHERE productId=?";
+
+        this.template.update(sql, stock, productId);
     }
 }
 

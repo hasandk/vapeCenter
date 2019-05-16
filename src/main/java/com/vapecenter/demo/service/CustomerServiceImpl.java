@@ -141,4 +141,14 @@ public class CustomerServiceImpl implements CustomerService {
 
         return list15;
     }
+
+    @Override
+    public ArrayList<Products> getAllProducts(){
+        return customerRepo.getAllProducts();
+    }
+
+    @Override
+    public void updateStock(Integer productId, Integer stock) {
+        customerRepo.updateStock(productId, stock);
+    }
 }
