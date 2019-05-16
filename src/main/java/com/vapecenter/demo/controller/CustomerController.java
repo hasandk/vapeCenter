@@ -539,4 +539,25 @@ public class CustomerController {
 
         return "creditcardAccept";
     }
+
+    @GetMapping("/removeProduct/{id}")
+    public String removeProduct(@PathVariable("id") int id, Model model) {
+        log.info("remove product getmapping called...");
+        Products product = customerService.getProductById(id);
+
+        model.addAttribute("product", product);
+
+
+        return "removeProduct";
+    }
+
+    @PutMapping("/removeProduct")
+    public String removeProduct(@ModelAttribute Products product) {
+        log.info("removeProduct putmapping called...");
+        log.info(product.getProductId()+"");
+        customerService.removeProduct(product.getProductId());
+
+        return "redirect:/";
+
+    }
 }

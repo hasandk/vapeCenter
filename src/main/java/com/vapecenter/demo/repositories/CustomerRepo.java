@@ -31,4 +31,5 @@ public interface CustomerRepo {
 
     ArrayList<Category> getAllCategories();
 
+    void removeProduct(int id);
 }

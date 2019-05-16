@@ -141,4 +141,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         return list15;
     }
+
+    @Override
+    public void removeProduct(int id) {
+        customerRepo.removeProduct(id);
+    }
 }

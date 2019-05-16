@@ -311,6 +311,13 @@ public class CustomerRepoImpl implements CustomerRepo {
             });
 
     }
+
+    @Override
+    public void removeProduct(int id) {
+
+        String sql = "DELETE FROM VapeCenter.Products WHERE productId=?";
+        this.template.update(sql, id);
+    }
 }
 
 
