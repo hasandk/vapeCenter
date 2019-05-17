@@ -558,7 +558,7 @@ public class CustomerController {
 
         customerService.updateProducts(products);
 
-        log.info("update products called " + customerService.updateProducts(products));
+        log.info("update products called :" + customerService.updateProducts(products));
 
 
         model.addAttribute("products", customerService.getAllProducts());
