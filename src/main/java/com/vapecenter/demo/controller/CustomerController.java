@@ -385,6 +385,7 @@ public class CustomerController {
         model.addAttribute("currentPage", page);
         model.addAttribute("maxPages", maxPages);
         model.addAttribute("pageArray", pageList);
+        model.addAttribute("categoryId", categoryId);
         model.addAttribute("cart", cart);
         model.addAttribute("categoryName", customerService.getCategoryById(categoryId).getCategoryName());
         model.addAttribute("categories", customerService.getAllCategories());
@@ -415,6 +416,12 @@ public class CustomerController {
         model.addAttribute("categories", customerService.getAllCategories());
 
         return "redirect:/" + CATEGORY + "/" + categoryId;
+    }
+
+    @PostMapping("/category/{categoryId}")
+    public String searchResult(@PathVariable("categoryId") int categoryId, @RequestParam("page") int page) {
+
+        return "redirect:/category/"+categoryId+"/"+page;
     }
 
     @GetMapping("/search")
