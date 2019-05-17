@@ -2,7 +2,7 @@ package com.vapecenter.demo.models;
 
 public class Products {
     int productId, stock, fk_categoryId;
-    String name, description, pictureLink;
+    String name, description, pictureLink, categoryName;
     int active;
     double price;
 
@@ -20,6 +20,17 @@ public class Products {
         this.name = name;
         this.description = description;
         this.pictureLink = pictureLink;
+        this.active = active;
+        this.price = price;
+    }
+
+    public Products(int productId, int stock, String name, String description, String pictureLink, String categoryName, int active, double price) {
+        this.productId = productId;
+        this.stock = stock;
+        this.name = name;
+        this.description = description;
+        this.pictureLink = pictureLink;
+        this.categoryName = categoryName;
         this.active = active;
         this.price = price;
     }
@@ -88,6 +99,14 @@ public class Products {
         this.fk_categoryId = fk_categoryId;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
         return "Products{" +
@@ -97,6 +116,7 @@ public class Products {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", pictureLink='" + pictureLink + '\'' +
+                ", categoryName='" + categoryName + '\'' +
                 ", active=" + active +
                 ", price=" + price +
                 '}';
