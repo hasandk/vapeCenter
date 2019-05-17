@@ -558,7 +558,7 @@ public class CustomerController {
         log.info(product.getProductId() + " " + product.getDescription() + " ");
         customerService.addProduct(product);
 
-        return "adminListProducts";
+        return "redirect:/adminListProducts";
     }
 
     @GetMapping("/adminListProducts")
