@@ -5,6 +5,8 @@
 </head>
 <body>
     <div class="container">
+        <header th:include="fragments/header :: navbar"></header>
+
         <div id="aboutUsImage" class="float-left w-50">
             <img th:src="${'/image/' + aboutUs.pictureLink}"/>
         </div>

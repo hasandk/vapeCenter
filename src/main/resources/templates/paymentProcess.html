@@ -5,6 +5,8 @@
 </head>
 <body>
     <div class="container">
+        <header th:include="fragments/header :: navbar"></header>
+
         <h1>Gå til kassen</h1>
         <h2>Kortbetaling</h2>
         <form action="/creditcardAccept" method="Post" class="was-validated">

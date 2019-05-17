@@ -5,6 +5,9 @@
 </head>
 <body>
 
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
     <h1 th:text="${'Produkter der matchede med ' + searchProduct}"></h1>
     <span class="active" th:each="product : ${products}">
 
@@ -34,6 +37,8 @@
     </form>
 
     <a href="#">Næste</a>
+
+</div>
 
 </body>
 </html>

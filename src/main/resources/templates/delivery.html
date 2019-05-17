@@ -5,6 +5,8 @@
 </head>
 <body>
     <div class="container">
+        <header th:include="fragments/header :: navbar"></header>
+
         <h1>Gå til kassen</h1>
         <h2>Vælg leverings metode</h2>
         <form method="post" th:action="@{/delivery}" th:object="${delivery}">
