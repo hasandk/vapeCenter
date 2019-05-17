@@ -41,16 +41,6 @@
 
             <a th:if="${currentPage-1 != 0}" th:href="'/listProducts/'+${currentPage-1}" class="btn btn-dark d-block float-left">Tilbage</a>
 
-            <!--<p th:text="${'På lager: ' + product.stock}"></p>
-            <form action="myservlet.do" method="POST">
-            <select name="myselect" id="myselect" onchange="this.form.submit()">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-                <option value="4">Four</option>
-            </select>
-            </form>-->
-
             <form th:method="post" th:action="@{/listProducts/}" class="form-inline d-block mx-2 float-left">
                 <select name="page" onchange='this.form.submit()'class="form-control mr-2">
                     <option th:each="pageFromArray : ${pageArray}" th:value="${pageFromArray}" th:text="${pageFromArray}"  th:selected="${pageFromArray==currentPage}"></option>

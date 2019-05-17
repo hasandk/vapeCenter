@@ -26,7 +26,6 @@ public class CustomerController {
     private ArrayList<Cart> cartList = new ArrayList<>();
 
     public CustomerController(){
-
         /*productsList.add(new Products(1, "Supervape", 5000000));
         productsList.add(new Products(2, "Crapvape", 5));
         productsList.add(new Products(3, "Bluevape", 550));
@@ -54,18 +53,15 @@ public class CustomerController {
     @GetMapping("/")
     public String index(HttpSession session, Model model){
         log.info("index called");
-        ArrayList<Category> categories;
+
 
         if(session.getAttribute("cart") == null){
             session.setAttribute("cart", cartList);
+            //session.setAttribute("categories", categories = customerService.getAllCategories());
         }
 
-        categories = customerService.getAllCategories();
-        model.addAttribute("categories", categories);
 
-        if(session.getAttribute("cart") == null){
-            session.setAttribute("cart", cartList);
-        }
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return "index";
     }
@@ -109,6 +105,7 @@ public class CustomerController {
         model.addAttribute("carts", cart);
         model.addAttribute("products", productsList);
         model.addAttribute("total", total);
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return CART;
     }
@@ -131,6 +128,7 @@ public class CustomerController {
 
         session.removeAttribute("cart");
         session.setAttribute("cart", cart);
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return "redirect:/cart";
     }
@@ -153,6 +151,7 @@ public class CustomerController {
 
         session.removeAttribute("cart");
         session.setAttribute("cart", cart);
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return "redirect:/cart";
     }
@@ -169,6 +168,7 @@ public class CustomerController {
 
         log.info("checkoutStep = " + checkoutStep);
 
+        model.addAttribute("categories", customerService.getAllCategories());
 
         if(checkoutStep > 0) {
             model.addAttribute("checkout", new Checkout());
@@ -188,7 +188,7 @@ public class CustomerController {
         session.setAttribute("checkoutStep", 2);
 
         log.info("Session: " + sessionCheckout.toString());
-
+        model.addAttribute("categories", customerService.getAllCategories());
         return "redirect:/delivery";
     }
 
@@ -205,7 +205,7 @@ public class CustomerController {
 
         model.addAttribute("delivery", new ShipingMethod());
         model.addAttribute("shippingMethods", customerService.getShippingMethods());
-
+        model.addAttribute("categories", customerService.getAllCategories());
         if(checkoutStep > 1) {
             return DELIVERY;
         } else {
@@ -261,6 +261,7 @@ public class CustomerController {
         model.addAttribute("maxPages", pages);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("pageArray", pageList);
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return "redirect:/listProducts/1";
     }
@@ -274,16 +275,6 @@ public class CustomerController {
         log.info("listProducts called... currentPage="+page+" maxPages="+maxPages);
 
         if(page>=1) {
-            /*if(customerService.modulus(productList) >= 1 && page == customerService.countPages(productList)) {
-                for(int i = (page * 15) - 15; i < (page*15)-15+customerService.modulus(productList); i++) {
-                    list15.add(productList.get(i));
-                }
-            }
-            else {
-                for (int i = (page * 15) - 15; i < page * 15; i++) {
-                    list15.add(productList.get(i));
-            }*/
-
             list15 = customerService.list15(productList, page);
         }
 
@@ -293,7 +284,7 @@ public class CustomerController {
         model.addAttribute("currentPage", page);
         model.addAttribute("maxPages", maxPages);
         model.addAttribute("pageArray", pageList);
-
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return "listProducts";
     }
@@ -307,8 +298,6 @@ public class CustomerController {
     public String listProducts(@ModelAttribute Cart cart, Model model, Cart cartNew, HttpSession session) {
         log.info("listProducts putmapping called...");
 
-        //cartList.add(cart);
-
         List<Cart> sCart = (List<Cart>) session.getAttribute("cart");
         session.removeAttribute("cart");
         sCart.add(cart);
@@ -317,7 +306,6 @@ public class CustomerController {
         for (Cart testCart: cartList) {
             log.info(""+testCart.getProductId()+" amount:"+testCart.getAmount());
         }
-
 
         model.addAttribute("productList", customerService.getProducts());
         model.addAttribute("cart", cartNew);
@@ -334,7 +322,7 @@ public class CustomerController {
 
         model.addAttribute("product", customerService.getProductById(productId));
         model.addAttribute("cart", cart);
-
+        model.addAttribute("categories", customerService.getAllCategories());
 
 
         return "viewProduct";
@@ -399,6 +387,7 @@ public class CustomerController {
         model.addAttribute("pageArray", pageList);
         model.addAttribute("cart", cart);
         model.addAttribute("categoryName", customerService.getCategoryById(categoryId).getCategoryName());
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return CATEGORY;
     }
@@ -423,6 +412,8 @@ public class CustomerController {
 
         model.addAttribute("productList", customerService.getProducts());
         model.addAttribute("cart", cartNew);
+        model.addAttribute("categories", customerService.getAllCategories());
+
         return "redirect:/" + CATEGORY + "/" + categoryId;
     }
 
@@ -438,7 +429,7 @@ public class CustomerController {
         log.info("search requestmapping called");
         log.info("search word" + searchProduct);
 
-        if(session.getAttribute("cart") == null){
+        /*if(session.getAttribute("cart") == null){
             session.setAttribute("cart", cartList);
         }
 
@@ -447,9 +438,44 @@ public class CustomerController {
         log.info("controller searchProduct result: " + searchResult.size());
 
         model.addAttribute("searchProduct", searchProduct);
-        model.addAttribute("products", searchResult);
-        return SEARCHRESULT;
+        model.addAttribute("products", searchResult);*/
 
+        return "redirect:/"+SEARCHRESULT+"/"+searchProduct+"/1";
+
+    }
+
+    @GetMapping("/searchResult/{searchInput}")
+    public String searchResult(@PathVariable("searchInput") String searchInput){
+        return "redirect:/"+SEARCHRESULT+"/"+searchInput+"/1";
+    }
+
+    @GetMapping("/searchResult/{searchInput}/{page}")
+    public String searchResult(@PathVariable("searchInput") String searchInput, @PathVariable("page") int page, Model model, HttpSession session) {
+        log.info("searchResult called... searchInput= "+searchInput+" page= "+page);
+
+        ArrayList<Products> list15 = new ArrayList<>();
+        ArrayList<Products> productList = customerService.searchProduct(searchInput);
+        int maxPages = customerService.countPages(productList);
+        ArrayList<Integer> pageList = customerService.getPageArray(maxPages);
+
+        if(page>=1) {
+            list15 = customerService.list15(productList, page);
+        }
+
+        model.addAttribute("productList", list15);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPages", maxPages);
+        model.addAttribute("pageArray", pageList);
+        model.addAttribute("searchInput", searchInput);
+        model.addAttribute("categories", customerService.getAllCategories());
+
+        return "searchResult";
+    }
+
+    @PostMapping("/searchResult/{searchInput}")
+    public String searchResult(@PathVariable("searchInput") String searchInput, @RequestParam("page") int page) {
+
+        return "redirect:/searchResult/"+searchInput+"/"+page;
     }
 
     @PutMapping("/searchResult")
@@ -480,12 +506,13 @@ public class CustomerController {
         AboutUs aboutUs = customerService.getAboutInfo(1);
         log.info("" + aboutUs.getPictureLink());
         model.addAttribute("aboutUs", aboutUs);
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return "aboutUs";
     }
 
     @GetMapping("/paymentProcess")
-    public String paymentProcess(HttpSession session) {
+    public String paymentProcess(HttpSession session, Model model) {
         log.info("paymentProcess called...");
 
         if(session.getAttribute("checkoutStep") == null){
@@ -507,7 +534,7 @@ public class CustomerController {
                 }
             }
         }
-
+        model.addAttribute("categories", customerService.getAllCategories());
         if(checkoutStep > 2) {
             return "paymentProcess";
         } else {
@@ -586,7 +613,7 @@ public class CustomerController {
         Products product = customerService.getProductById(id);
 
         model.addAttribute("product", product);
-
+        model.addAttribute("categories", customerService.getAllCategories());
 
         return "removeProduct";
     }
