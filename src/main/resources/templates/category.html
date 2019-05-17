@@ -5,6 +5,9 @@
 </head>
 <body>
 
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
     <h1 th:text="${categoryName}"></h1>
     <span class="active" th:each="product : ${productList}">
 
@@ -22,18 +25,19 @@
     </span>
 
     <br><hr><br>
+    <div id="pageSelect" class="p-6">
+        <a th:if="${currentPage-1 != 0}" th:href="'/category/'+${categoryId}+'/'+${currentPage-1}" class="btn btn-dark d-block float-left">Tilbage</a>
 
-    <a href="#">Tilbage</a>
+        <form th:method="post" th:action="'/category/'+${categoryId}+'/'" class="form-inline d-block mx-2 float-left">
+            <select name="page" onchange='this.form.submit()'class="form-control mr-2">
+                <option th:each="pageFromArray : ${pageArray}" th:value="${pageFromArray}" th:text="${pageFromArray}"  th:selected="${pageFromArray==currentPage}"></option>
+            </select><span th:text="'ud af ' +${maxPages}"></span>
+        </form>
 
-    <form>
-        <select>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-        </select> ud af 3
-    </form>
+        <a th:if="${currentPage < maxPages}" th:href="'/category/'+${categoryId}+'/'+${currentPage+1}" class="btn btn-dark d-block float-left">Næste</a>
+    </div>
 
-    <a href="#">Næste</a>
+</div>
 
 </body>
 </html>

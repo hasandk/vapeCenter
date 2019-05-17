@@ -4,6 +4,7 @@
     <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
 </head>
 <div class="container">
+    <header th:include="fragments/header :: navbar"></header>
 
     <div id="productImage" class="float-left w-50 p-5">
         <img th:src="${product.pictureLink}"/>

@@ -36,7 +36,10 @@ public interface CustomerService {
 
     Products updateProducts(Products products);
 
-    ArrayList<Products> getAllProducts();
     Products findProduct (int productId);
 
+    ArrayList<Products> getAllProducts();
+
+    void updateStock(Integer productId, Integer stock);
+    void removeProduct(int id);
 }

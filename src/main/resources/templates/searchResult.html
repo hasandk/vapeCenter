@@ -5,8 +5,13 @@
 </head>
 <body>
 
-    <h1 th:text="${'Produkter der matchede med ' + searchProduct}"></h1>
-    <span class="active" th:each="product : ${products}">
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1 th:text="${'Produkter der matchede med ' + searchInput}"></h1>
+
+
+    <!--<span class="active" th:each="product : ${products}">
 
         <form th:method="Put" th:action="@{/category}" th:object="${cart}">
             <span name="name" th:text="${product.name}"></span>
@@ -22,18 +27,29 @@
     </span>
 
     <br><hr><br>
+-->
+    <div id="productList">
+        <a th:href="'/viewProduct/'+${product.productId}" class="productItem" th:each="product : ${productList}">
+            <img th:src="${product.pictureLink}"/>
+            <span class="productName" th:text="${product.name}"></span>
+            <span class="productPrice" th:text="${product.price}+' DKK'"></span>
+        </a>
+    </div>
 
-    <a href="#">Tilbage</a>
+    <div id="pageSelect" class="p-6">
 
-    <form>
-        <select>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-        </select> ud af 3
-    </form>
+        <a th:if="${currentPage-1 != 0}" th:href="'/searchResult/'+${searchInput}+'/'+${currentPage-1}" class="btn btn-dark d-block float-left">Tilbage</a>
 
-    <a href="#">Næste</a>
+        <form th:method="post" th:action="'/searchResult/'+${searchInput}+'/'" class="form-inline d-block mx-2 float-left">
+            <select name="page" onchange='this.form.submit()'class="form-control mr-2">
+                <option th:each="pageFromArray : ${pageArray}" th:value="${pageFromArray}" th:text="${pageFromArray}"  th:selected="${pageFromArray==currentPage}"></option>
+            </select><span th:text="'ud af ' +${maxPages}"></span>
+        </form>
+
+        <a th:if="${currentPage < maxPages}" th:href="'/searchResult/'+${searchInput}+'/'+${currentPage+1}" class="btn btn-dark d-block float-left">Næste</a>
+    </div>
+
+</div>
 
 </body>
 </html>

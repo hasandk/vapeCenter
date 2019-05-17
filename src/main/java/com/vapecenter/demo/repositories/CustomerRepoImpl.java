@@ -97,6 +97,38 @@ public class CustomerRepoImpl implements CustomerRepo {
     }
 
     @Override
+    public ArrayList<Products> getAllProducts() {
+        String sql = "SELECT productId, name, description, price, pictureLink, active, stock, categoryName FROM Products\n" +
+                "LEFT JOIN Category\n" +
+                "ON Products.fk_categoryId = Category.categoryId";
+        return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
+            @Override
+            public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int productId, stock;
+                String name, description, pictureLink, categoryName;
+                double price;
+                int active;
+                ArrayList<Products> products = new ArrayList<>();
+
+                while (rs.next()) {
+                    productId = rs.getInt("productId");
+                    name = rs.getString("name");
+                    categoryName = rs.getString("categoryName");
+                    description = rs.getString("description");
+                    price = rs.getDouble("price");
+                    pictureLink = rs.getString("pictureLink");
+                    active = rs.getInt("active");
+                    stock = rs.getInt("stock");
+
+                    products.add(new Products(productId, stock, name, description, pictureLink, categoryName, active, price));
+                }
+                return products;
+            }
+        });
+
+    }
+
+    @Override
     public ArrayList<Products> getProductsByCategory(int categoryId) {
         String sql = "SELECT * FROM Products WHERE active =1 AND fk_categoryId = ?";
         return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
@@ -226,15 +258,16 @@ public class CustomerRepoImpl implements CustomerRepo {
 
     @Override
     public Products addProduct(Products product) {
-        String sql = "INSERT INTO VapeCenter.Products VALUES(default,?,?,?,?,?,?)";
+        String sql = "INSERT INTO VapeCenter.Products VALUES(default,?,?,?,?,?,?,?)";
         String name = product.getName();
         String description = product.getDescription();
         double price = product.getPrice();
         String pictureLink = product.getPictureLink();
         int active = product.getActive();
         int stock = product.getStock();
+        int categoryId = product.getFk_categoryId();
 
-        this.template.update(sql, name, description, price, pictureLink, active, stock);
+        this.template.update(sql, name, description, price, pictureLink, active, stock, categoryId);
 
         return product;
     }
@@ -330,45 +363,28 @@ public class CustomerRepoImpl implements CustomerRepo {
     }
 
     @Override
-    public ArrayList<Products> getAllProducts() {
-        String sql = "SELECT productId, name, description, price, pictureLink, active, stock FROM Products";
-        return this.template.query(sql, new ResultSetExtractor<ArrayList<Products>>() {
-            @Override
-            public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                int productId, active, stock;
-                String name, description, pictureLink;
-                int fk_categoryId;
-                double price;
-                ArrayList<Products> productList = new ArrayList<>();
+    public Products findProduct(int productId) {
+        String sql = "SELECT * FROM VapeCenter.Products WHERE productId = ?";
+        log.info("id from producs :" + productId);
 
-                while (rs.next()) {
-                    productId = rs.getInt("productId");
-                    active = rs.getInt("active");
-                    stock = rs.getInt("stock");
-                    name = rs.getString("name");
-                    description = rs.getString("description");
-                    pictureLink = rs.getString("pictureLink");
-                    fk_categoryId = rs.getInt("fk_categoryId");
+        RowMapper<Products> rowMapper = new BeanPropertyRowMapper<>(Products.class);
 
-                    price = rs.getDouble("price");
+        Products products = template.queryForObject(sql, rowMapper, productId);
 
-                    productList.add(new Products(productId, active, stock, name, description, pictureLink,fk_categoryId ,price));
-                }
-                return productList;
-            }
-        });
+        return products;
+    }
+        @Override
+        public void updateStock(Integer productId, Integer stock) {
+        String sql = "UPDATE VapeCenter.Products SET stock = ? WHERE productId=?";
+
+        this.template.update(sql, stock, productId);
     }
 
     @Override
-    public Products findProduct(int productId) {
-            String sql = "SELECT * FROM VapeCenter.Products WHERE productId = ?";
-            log.info("id from producs :" + productId);
+    public void removeProduct(int id) {
 
-            RowMapper<Products> rowMapper = new BeanPropertyRowMapper<>(Products.class);
-
-            Products products = template.queryForObject(sql, rowMapper, productId);
-
-        return products;
+        String sql = "DELETE FROM VapeCenter.Products WHERE productId=?";
+        this.template.update(sql, id);
     }
 }
 

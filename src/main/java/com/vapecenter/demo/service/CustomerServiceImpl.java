@@ -127,22 +127,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ArrayList<Products> list15(ArrayList<Products> productList, int page) {
         ArrayList<Products> list15 = new ArrayList<>();
-
-        if(modulus(productList) >= 1 && page == countPages(productList)) {
-            for(int i = (page * PRODUCTS_PR_PAGE) - PRODUCTS_PR_PAGE; i < (page*PRODUCTS_PR_PAGE)-PRODUCTS_PR_PAGE+modulus(productList); i++) {
-                list15.add(productList.get(i));
+        if(productList.size()!=0) {
+            if (modulus(productList) >= 1 && page == countPages(productList)) {
+                for (int i = (page * PRODUCTS_PR_PAGE) - PRODUCTS_PR_PAGE; i < (page * PRODUCTS_PR_PAGE) - PRODUCTS_PR_PAGE + modulus(productList); i++) {
+                    list15.add(productList.get(i));
+                }
+            } else {
+                for (int i = (page * PRODUCTS_PR_PAGE) - PRODUCTS_PR_PAGE; i < page * PRODUCTS_PR_PAGE; i++) {
+                    list15.add(productList.get(i));
+                }
             }
         }
-        else {
-            for (int i = (page * PRODUCTS_PR_PAGE) - PRODUCTS_PR_PAGE; i < page * PRODUCTS_PR_PAGE; i++) {
-                list15.add(productList.get(i));
-            }
-        }
-
         return list15;
     }
 
-    @Override
+
     public Products updateProducts(Products products) {
 
         return customerRepo.updateProducts(products);
@@ -157,5 +156,17 @@ public class CustomerServiceImpl implements CustomerService {
     public Products findProduct(int productId) {
         Products products = customerRepo.findProduct(productId);
         return products;
+    }
+
+
+    @Override
+    public void updateStock(Integer productId, Integer stock) {
+        customerRepo.updateStock(productId, stock);
+    }
+
+    @Override
+    public void removeProduct(int id) {
+        customerRepo.removeProduct(id);
+
     }
 }

@@ -8,6 +8,7 @@
 
 body{
     font-weight: 300;
+    padding-top: 40px;
 }
 
 h1{
@@ -20,6 +21,10 @@ h2{
 
 h3{
     margin: 10px 0 20px 0;
+}
+
+div.container{
+    /*padding-top: 40px;*/
 }
 
 div#productList{
@@ -104,10 +109,10 @@ div#aboutUsDetails{
 
 }
 
-a:hover {
+/*a:hover {
     color: #fffafe;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
-}
+}*/
