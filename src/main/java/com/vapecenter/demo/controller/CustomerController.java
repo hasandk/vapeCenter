@@ -539,4 +539,25 @@ public class CustomerController {
 
         return "creditcardAccept";
     }
+
+    @GetMapping("/addProduct")
+    public String addProduct(Model model) {
+        log.info("add product called...");
+
+        model.addAttribute("categories", customerService.getAllCategories());
+        model.addAttribute("product", new Products());
+
+        return "addProduct";
+    }
+
+    @PostMapping("/addProduct")
+    public String addProduct(@ModelAttribute Products product) {
+        log.info("addProduct postmapping called...");
+
+        log.info(product.getProductId()+" "+product.getDescription()+" ");
+        customerService.addProduct(product);
+
+
+        return "redirect:/";
+    }
 }

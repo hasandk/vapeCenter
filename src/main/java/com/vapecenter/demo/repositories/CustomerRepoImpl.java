@@ -225,15 +225,16 @@ public class CustomerRepoImpl implements CustomerRepo {
 
     @Override
     public Products addProduct(Products product) {
-        String sql = "INSERT INTO VapeCenter.Products VALUES(default,?,?,?,?,?,?)";
+        String sql = "INSERT INTO VapeCenter.Products VALUES(default,?,?,?,?,?,?,?)";
         String name = product.getName();
         String description = product.getDescription();
         double price = product.getPrice();
         String pictureLink = product.getPictureLink();
         int active = product.getActive();
         int stock = product.getStock();
+        int categoryId = product.getFk_categoryId();
 
-        this.template.update(sql, name, description, price, pictureLink, active, stock);
+        this.template.update(sql, name, description, price, pictureLink, active, stock, categoryId);
 
         return product;
     }
