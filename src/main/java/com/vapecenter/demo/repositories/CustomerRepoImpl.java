@@ -78,14 +78,15 @@ public class CustomerRepoImpl implements CustomerRepo {
                 ArrayList<Products> products = new ArrayList<>();
 
                 while (rs.next()) {
+
                     productId = rs.getInt("productId");
-                    name = rs.getString("name");
+                    stock = rs.getInt("stock");
                     fk_categoryId = rs.getInt("fk_categoryId");
+                    name = rs.getString("name");
                     description = rs.getString("description");
-                    price = rs.getDouble("price");
                     pictureLink = rs.getString("pictureLink");
                     active = rs.getInt("active");
-                    stock = rs.getInt("stock");
+                    price = rs.getDouble("price");
 
                     products.add(new Products(productId, stock, fk_categoryId, name, description, pictureLink, active, price));
                 }
@@ -314,15 +315,16 @@ public class CustomerRepoImpl implements CustomerRepo {
 
     @Override
     public Products updateProducts(Products products) {
-        String sql = "UPDATE Products SET name = ?, description = ?, price = ?, pictureLink = ? ,active = ?,stock = ?, WHERE productId = ?";
+        String sql = "UPDATE Products SET name = ?, description = ?, price = ?, pictureLink = ? ,active = ?,stock = ? WHERE productId = ?";
         String name = products.getName();
         String description = products.getDescription();
         double price = products.getPrice();
         String pictureLink = products.getPictureLink();
         int active = products.getActive();
         int stock = products.getStock();
+        int productId = products.getProductId();
 
-        this.template.update(sql, name, description, price, pictureLink, active, stock);
+        this.template.update(sql, name, description, price, pictureLink, active, stock, productId);
         return products;
     }
 
@@ -334,19 +336,22 @@ public class CustomerRepoImpl implements CustomerRepo {
             public ArrayList<Products> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 int productId, active, stock;
                 String name, description, pictureLink;
+                int fk_categoryId;
                 double price;
                 ArrayList<Products> productList = new ArrayList<>();
 
                 while (rs.next()) {
                     productId = rs.getInt("productId");
-                    name = rs.getString("name");
-                    description = rs.getString("description");
-                    price = rs.getDouble("price");
-                    pictureLink = rs.getString("pictureLink");
                     active = rs.getInt("active");
                     stock = rs.getInt("stock");
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    pictureLink = rs.getString("pictureLink");
+                    fk_categoryId = rs.getInt("fk_categoryId");
 
-                    productList.add(new Products(productId, active, stock, name, description, pictureLink, price));
+                    price = rs.getDouble("price");
+
+                    productList.add(new Products(productId, active, stock, name, description, pictureLink,fk_categoryId ,price));
                 }
                 return productList;
             }
