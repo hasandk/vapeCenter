@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+<body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1>Tilføj Produkt</h1>
+
+    <form method="Post" th:action="@{/addProduct}" th:object="${product}">
+
+        <label>Produkt Navn:</label>
+        <input type="text" class="form-control mr-sm-2"  th:name="name" placeholder="Produkt navn" required/><br>
+
+        <label>Produkt beskrivelse:</label><br>
+            <textarea class="form-control mr-sm-2" rows ="3" cols = "60" th:name = "description" placeholder = "Skriv beskrivelse her" required></textarea><br>
+
+        <label>Antal på lager:</label><br>
+            <input type="number" class="form-control mr-sm-2" rows ="2" cols = "30" th:name = "stock" placeholder = "1" required><br>
+
+        <label>Produktets pris:</label><br>
+            <input type="number" class="form-control mr-sm-2" th:name = "price" placeholder = "125" required><br>
+
+        <label>Produkt billede:</label><br>
+        <input type="text" class="form-control mr-sm-2"  th:name="pictureLink" placeholder="link til produktbillede eks. https://www.iowapublicradio.org/sites/ipr/files/201904/vape4.jpg" required/><br>
+
+        <label>Set aktiv:</label><br>
+        <input type="number" min="0" max="1" class="form-control mr.sm-2" th:name="active" placeholder="0=inaktiv, 1=aktiv"><br>
+
+        <!--<label>Kategori</label><br>
+        <select th:name = "fk_categoryId" class="form-control">
+            <option th:each="category : ${categories}" th:value="${category.categoryId}" th:if="${category.categorySubList==0}" th:text="${category.categoryName}"></option>
+        </select></form><br>
+-->
+        <label>Kategori</label><br>
+        <select th:name = "fk_categoryId" class="form-control">
+            <option th:each="category : ${categories}" th:value="${category.categoryId}" th:if="${category.categorySubList>=1}" th:text="${category.categoryName}"></option>
+        </select><br>
+
+        <input class="btn btn-light" type="button" value="Anuller" onclick="location.href='#';"/>
+
+        <button class="btn btn-primary" type="submit">Opret produkt</button>
+
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>

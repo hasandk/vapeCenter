@@ -12,6 +12,8 @@ public interface CustomerRepo {
 
     ArrayList<Products> getProducts();
 
+    ArrayList<Products> getAllProducts();
+
     ArrayList<Products> getProductsByCategory(int categoryId);
 
     ArrayList<Products> searchProduct(String search);
@@ -31,4 +33,6 @@ public interface CustomerRepo {
 
     ArrayList<Category> getAllCategories();
 
+    void updateStock(Integer productId, Integer stock);
+    void removeProduct(int id);
 }

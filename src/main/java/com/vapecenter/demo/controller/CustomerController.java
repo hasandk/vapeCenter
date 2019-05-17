@@ -47,6 +47,7 @@ public class CustomerController {
     private final String SEARCH = "search";
     private final String SEARCHRESULT = "searchResult";
     private final String LISTPRODUCTS = "listProducts";
+    private final String ADMINLISTPRODUCTS = "adminListProducts";
 
     Logger log = Logger.getLogger(CustomerController.class.getName());
 
@@ -538,5 +539,64 @@ public class CustomerController {
         customerService.createOrder(cart, checkout, shipingMethod, total);
 
         return "creditcardAccept";
+    }
+
+    @GetMapping("/addProduct")
+    public String addProduct(Model model) {
+        log.info("add product called...");
+
+        model.addAttribute("categories", customerService.getAllCategories());
+        model.addAttribute("product", new Products());
+
+        return "addProduct";
+    }
+
+    @PostMapping("/addProduct")
+    public String addProduct(@ModelAttribute Products product) {
+        log.info("addProduct postmapping called...");
+
+        log.info(product.getProductId() + " " + product.getDescription() + " ");
+        customerService.addProduct(product);
+
+        return "redirect:/adminListProducts";
+    }
+
+    @GetMapping("/adminListProducts")
+    public String adminListProducts(Model model){
+        log.info("AdminListProducts is called...");
+
+        model.addAttribute("products", customerService.getAllProducts());
+        model.addAttribute("categories",customerService.getAllCategories());
+
+        return ADMINLISTPRODUCTS;
+    }
+
+    @RequestMapping(value = "/editStock", method = RequestMethod.POST)
+    public String editCart(@RequestParam("productId")Integer productId, @RequestParam("stock")Integer stock) throws Exception {
+        log.info("editStock is called...");
+
+        customerService.updateStock(productId, stock);
+
+        return "redirect:/adminListProducts";
+    }
+
+    @GetMapping("/removeProduct/{id}")
+    public String removeProduct(@PathVariable("id") int id, Model model) {
+        log.info("remove product getmapping called...");
+        Products product = customerService.getProductById(id);
+
+        model.addAttribute("product", product);
+
+
+        return "removeProduct";
+    }
+
+    @PutMapping("/removeProduct")
+    public String removeProduct(@ModelAttribute Products product) {
+        log.info("removeProduct putmapping called...");
+        log.info(product.getProductId()+"");
+        customerService.removeProduct(product.getProductId());
+
+        return "redirect:/";
     }
 }
