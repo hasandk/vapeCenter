@@ -315,7 +315,8 @@ public class CustomerRepoImpl implements CustomerRepo {
 
     @Override
     public Products updateProducts(Products products) {
-        String sql = "UPDATE Products SET name = ?, description = ?, price = ?, pictureLink = ? ,active = ?,stock = ? WHERE productId = ?";
+        log.info(""+products.toString());
+        String sql = "UPDATE VapeCenter.Products SET name = ?, description = ?, price = ?, pictureLink = ? ,active = ?,stock = ? WHERE productId = ?";
         String name = products.getName();
         String description = products.getDescription();
         double price = products.getPrice();

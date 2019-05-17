@@ -144,7 +144,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Products updateProducts(Products products) {
-        return products;
+
+        return customerRepo.updateProducts(products);
     }
 
     @Override
